@@ -1,0 +1,26 @@
+{
+  "name": "bugbakery-training",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Software training platform — public site, headless CMS and realtime API",
+  "workspaces": [
+    "server",
+    "client",
+    "cms"
+  ],
+  "scripts": {
+    "dev": "concurrently -n api,site,cms -c blue,green,magenta \"npm run dev -w server\" \"npm run dev -w client\" \"npm run dev -w cms\"",
+    "dev:api": "npm run dev -w server",
+    "dev:site": "npm run dev -w client",
+    "dev:cms": "npm run dev -w cms",
+    "seed": "npm run seed -w server",
+    "build": "npm run build -w client && npm run build -w cms",
+    "start": "npm run start -w server"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

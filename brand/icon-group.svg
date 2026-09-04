@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48" role="img" aria-label="A cohort">
+  <!-- Three figures. Circle over dome, the same construction as the mark. -->
+  <g fill="#1B3FD8">
+    <circle cx="9" cy="21" r="4" />
+    <path d="M2.5 34a6.5 6 0 0 1 13 0z" />
+    <circle cx="39" cy="21" r="4" />
+    <path d="M32.5 34a6.5 6 0 0 1 13 0z" />
+  </g>
+  <g fill="#1B3FD8">
+    <circle cx="24" cy="18" r="5" />
+    <path d="M16 34a8 7.5 0 0 1 16 0z" />
+  </g>
+</svg>

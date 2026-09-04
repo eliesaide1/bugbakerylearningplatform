@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48" role="img" aria-label="One to one">
+  <!-- Two figures, and the exchange between them. -->
+  <g fill="#1B3FD8">
+    <circle cx="13" cy="19" r="5.5" />
+    <path d="M4 35a9 8 0 0 1 18 0z" />
+    <circle cx="35" cy="19" r="5.5" />
+    <path d="M26 35a9 8 0 0 1 18 0z" />
+  </g>
+  <g fill="#E9A13B">
+    <circle cx="24" cy="19" r="2" />
+  </g>
+</svg>

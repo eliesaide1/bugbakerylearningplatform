@@ -1,0 +1,5 @@
+@import "tailwindcss";
+@import "../../shared/theme.css";
+
+/* Classes named in shared/styles.ts and shared/ui must survive the build. */
+@source "../../shared";

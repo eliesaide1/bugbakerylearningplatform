@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-labelledby="bb-fav-title">
+  <title id="bb-fav-title">Bug Bakery</title>
+
+  <!--
+    Tab-sized cut. At 16px the diagonal scoring turns to mush, so it is dropped
+    and everything else is thickened: dome, one centre seam, two antennae.
+  -->
+  <rect width="64" height="64" rx="12" fill="#14181F" />
+
+  <g fill="none" stroke="#F4F5F3" stroke-width="4" stroke-linecap="round">
+    <path d="M25 32C22.5 25 19.5 21 16 18.5" />
+    <path d="M39 32C41.5 25 44.5 21 48 18.5" />
+  </g>
+  <circle cx="15.5" cy="18" r="3.6" fill="#E9A13B" />
+  <circle cx="48.5" cy="18" r="3.6" fill="#E9A13B" />
+
+  <mask id="bb-fav-score">
+    <rect width="64" height="64" fill="#fff" />
+    <path d="M32 32V47" stroke="#000" stroke-width="4" stroke-linecap="round" />
+  </mask>
+  <path d="M12 47a20 18 0 0 1 40 0z" fill="#F4F5F3" mask="url(#bb-fav-score)" />
+
+  <path d="M11 51h42" fill="none" stroke="#E9A13B" stroke-width="4" stroke-linecap="round" />
+</svg>

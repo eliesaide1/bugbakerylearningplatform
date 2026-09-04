@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Elie — Software Training | MERN, .NET, DevOps, Mobile</title>
+<meta name="description" content="Practical software training: recorded lessons you watch on your own time, a live session every Monday, and one-on-one hours. MERN, Angular + .NET Core, DevOps, React Native, and web fundamentals.">
+
+<meta property="og:title" content="Learn to build software the way it's built at work">
+<meta property="og:description" content="Recorded lessons, a live session every Monday, and one-on-one hours. MERN · Angular + .NET Core · DevOps · React Native · Web fundamentals.">
+<meta property="og:type" content="website">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --ink:#14181F;
+  --ink-2:#39424F;
+  --muted:#6C7686;
+  --paper:#F4F5F3;
+  --panel:#FFFFFF;
+  --line:#DCDFDA;
+  --line-strong:#C3C8C0;
+  --blue:#1B3FD8;
+  --blue-deep:#152FA0;
+  --blue-soft:#E7EAFB;
+  --amber:#E9A13B;
+  --amber-soft:#FBEFD9;
+  --radius:4px;
+  --maxw:1120px;
+  --step-0:1.0625rem;
+  --step-1:1.3125rem;
+  --step-2:1.6rem;
+  --step-3:2.1rem;
+  --step-4:2.9rem;
+}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  font-size:var(--step-0);
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3{
+  font-family:"Bricolage Grotesque","IBM Plex Sans",sans-serif;
+  font-weight:800;
+  line-height:1.05;
+  letter-spacing:-0.02em;
+  margin:0;
+  text-wrap:balance;
+}
+p{margin:0}
+a{color:inherit}
+img{max-width:100%}
+:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+.band{padding:88px 0}
+.band-tight{padding:64px 0}
+.band-ink{background:var(--ink);color:#EDEFEC}
+.band-ink h2{color:#fff}
+
+.lede{max-width:62ch;color:var(--ink-2);font-size:var(--step-1);line-height:1.5}
+.note{color:var(--muted);font-size:0.95rem}
+.band-ink .lede,.band-ink .note{color:#B7BFC9}
+
+.h-sec{font-size:var(--step-3);margin-bottom:14px}
+.rule{height:1px;background:var(--line);border:0;margin:0}
+
+/* ---------- top bar ---------- */
+.top{
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  padding:20px 0;
+}
+.brand{display:flex;align-items:baseline;gap:10px;font-weight:600;letter-spacing:-0.01em}
+.brand b{font-family:"Bricolage Grotesque",sans-serif;font-size:1.15rem;font-weight:800}
+.brand span{color:var(--muted);font-size:0.9rem}
+.top nav{display:flex;gap:22px;align-items:center;font-size:0.97rem}
+.top nav a{text-decoration:none;color:var(--ink-2)}
+.top nav a:hover{color:var(--blue);text-decoration:underline;text-underline-offset:4px}
+
+/* ---------- buttons ---------- */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  padding:13px 22px;border-radius:var(--radius);
+  font:600 1rem/1 "IBM Plex Sans",sans-serif;
+  text-decoration:none;border:1.5px solid var(--blue);
+  background:var(--blue);color:#fff;cursor:pointer;
+  transition:background .15s ease,border-color .15s ease;
+}
+.btn:hover{background:var(--blue-deep);border-color:var(--blue-deep)}
+.btn-ghost{background:transparent;color:var(--blue)}
+.btn-ghost:hover{background:var(--blue-soft);border-color:var(--blue)}
+.btn-light{background:#fff;color:var(--ink);border-color:#fff}
+.btn-light:hover{background:#E4E7FA;border-color:#E4E7FA}
+.btn[disabled]{opacity:.45;pointer-events:none}
+.btn-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+
+/* ---------- hero ---------- */
+.hero{padding:36px 0 76px}
+.hero-grid{display:grid;grid-template-columns:1.05fr 0.95fr;gap:56px;align-items:start}
+.hero h1{font-size:var(--step-4)}
+.hero .lede{margin-top:22px}
+.hero-facts{
+  margin-top:34px;padding-top:22px;border-top:1px solid var(--line);
+  display:grid;grid-template-columns:repeat(3,auto);gap:26px;justify-content:start;
+  font-size:0.95rem;color:var(--ink-2);
+}
+.hero-facts b{display:block;font-family:"Bricolage Grotesque",sans-serif;font-size:1.5rem;font-weight:800;color:var(--ink)}
+
+/* ---------- track builder ---------- */
+.builder{
+  background:var(--panel);
+  border:1px solid var(--line-strong);
+  border-top:5px solid var(--blue);
+  padding:26px 26px 22px;
+}
+.builder h2{font-size:var(--step-2);margin-bottom:6px}
+.chipset{margin:18px 0 0}
+.chipset h3{
+  font-family:"IBM Plex Sans",sans-serif;font-size:0.9rem;font-weight:600;
+  color:var(--muted);letter-spacing:0;margin-bottom:9px;
+}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{
+  font-family:"IBM Plex Mono",monospace;font-size:0.86rem;
+  padding:7px 12px;border:1px solid var(--line-strong);background:#fff;
+  border-radius:999px;cursor:pointer;color:var(--ink-2);
+  transition:background .12s ease,color .12s ease,border-color .12s ease;
+}
+.chip:hover{border-color:var(--blue);color:var(--blue)}
+.chip[aria-pressed="true"]{background:var(--blue);border-color:var(--blue);color:#fff}
+.builder-out{
+  margin-top:22px;padding-top:18px;border-top:1px dashed var(--line-strong);
+}
+.builder-out .track-name{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:1.25rem;line-height:1.25}
+.builder-out .track-meta{color:var(--muted);font-size:0.95rem;margin-top:6px}
+.builder .btn{margin-top:16px;width:100%}
+
+/* ---------- week strip ---------- */
+.week{display:flex;gap:6px;margin:26px 0 0}
+.day{
+  flex:1;text-align:center;padding:14px 4px;border:1px solid #2C333F;
+  color:#8C95A2;font-size:0.85rem;background:#191E27;
+}
+.day.on{background:var(--amber);border-color:var(--amber);color:#231705;font-weight:600}
+.day b{display:block;font-family:"Bricolage Grotesque",sans-serif;font-size:0.95rem}
+
+.rhythm{display:grid;grid-template-columns:repeat(3,1fr);gap:40px;margin-top:44px}
+.rhythm h3{font-size:var(--step-1);margin-bottom:10px;color:#fff}
+.rhythm p{color:#B7BFC9;font-size:0.99rem}
+.rhythm .tag{
+  display:inline-block;font-family:"IBM Plex Mono",monospace;font-size:0.78rem;
+  color:#8C95A2;margin-bottom:12px;
+}
+.rhythm .tag.live{color:var(--amber)}
+
+/* ---------- programs ---------- */
+.programs{margin-top:34px;border-top:1px solid var(--line-strong)}
+.prog{border-bottom:1px solid var(--line-strong)}
+.prog summary{
+  display:grid;grid-template-columns:auto 1fr auto;gap:20px;align-items:center;
+  padding:22px 4px;cursor:pointer;list-style:none;
+}
+.prog summary::-webkit-details-marker{display:none}
+.prog summary:hover .prog-title{color:var(--blue)}
+.prog-num{font-family:"IBM Plex Mono",monospace;color:var(--muted);font-size:0.9rem}
+.prog-title{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:1.45rem;letter-spacing:-0.02em}
+.prog-stack{font-family:"IBM Plex Mono",monospace;font-size:0.85rem;color:var(--muted);margin-top:4px}
+.prog-open{
+  width:26px;height:26px;border:1px solid var(--line-strong);border-radius:50%;
+  display:grid;place-items:center;color:var(--blue);font-size:1.1rem;flex:none;
+}
+.prog[open] .prog-open{background:var(--blue);color:#fff;border-color:var(--blue)}
+.prog-body{padding:0 4px 30px 46px;display:grid;grid-template-columns:1.4fr 1fr;gap:40px}
+.prog-body ul{margin:0;padding-left:18px}
+.prog-body li{margin-bottom:7px;color:var(--ink-2)}
+.prog-side dt{font-size:0.85rem;color:var(--muted);margin-top:14px}
+.prog-side dd{margin:2px 0 0;font-weight:600}
+.prog-side dl{margin:0}
+
+/* ---------- formats ---------- */
+.formats{display:grid;grid-template-columns:repeat(2,1fr);gap:0;margin-top:36px;border:1px solid var(--line-strong);background:var(--panel)}
+.fmt{padding:28px 26px;border-right:1px solid var(--line-strong)}
+.fmt:last-child{border-right:0}
+.fmt h3{font-size:1.3rem;margin-bottom:8px}
+.fmt p{color:var(--ink-2);font-size:0.99rem;margin-bottom:14px}
+.fmt ul{margin:0;padding-left:18px;color:var(--ink-2);font-size:0.96rem}
+.fmt li{margin-bottom:6px}
+.fmt.feature{background:var(--blue-soft)}
+
+/* ---------- instructor ---------- */
+.about{display:grid;grid-template-columns:0.85fr 1.15fr;gap:56px;align-items:start}
+.about-card{background:var(--panel);border:1px solid var(--line-strong);padding:26px}
+.about-card dl{margin:0}
+.about-card dt{font-size:0.85rem;color:var(--muted);margin-top:16px}
+.about-card dt:first-child{margin-top:0}
+.about-card dd{margin:3px 0 0;font-weight:600}
+.about p + p{margin-top:16px}
+
+/* ---------- faq ---------- */
+.faq{margin-top:30px;max-width:78ch}
+.faq details{border-bottom:1px solid var(--line);padding:16px 0}
+.faq summary{cursor:pointer;font-weight:600;list-style:none}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary:hover{color:var(--blue)}
+.faq p{margin-top:10px;color:var(--ink-2);max-width:70ch}
+
+/* ---------- contact ---------- */
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}
+.field{margin-bottom:16px}
+.field label{display:block;font-size:0.9rem;margin-bottom:6px;color:#B7BFC9}
+.field input,.field select,.field textarea{
+  width:100%;padding:12px 14px;background:#1D232D;color:#fff;
+  border:1px solid #333B47;border-radius:var(--radius);
+  font:400 1rem/1.4 "IBM Plex Sans",sans-serif;
+}
+.field textarea{min-height:110px;resize:vertical}
+.field input::placeholder,.field textarea::placeholder{color:#6C7686}
+.contact-links{margin-top:22px;display:grid;gap:10px;font-size:1rem}
+.contact-links a{color:#fff;text-underline-offset:4px}
+
+footer{padding:28px 0;font-size:0.92rem;color:var(--muted);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+footer a{color:var(--ink-2)}
+
+/* ---------- motion ---------- */
+.anim .rise{opacity:0;transform:translateY(18px)}
+.anim .rise.in{
+  opacity:1;transform:none;
+  transition:opacity .6s cubic-bezier(.22,.75,.28,1),transform .6s cubic-bezier(.22,.75,.28,1);
+}
+
+/* hero underline draws itself once the page settles */
+.hero h1 em{font-style:normal;position:relative;white-space:nowrap}
+.hero h1 em::after{
+  content:"";position:absolute;left:0;right:0;bottom:-2px;height:6px;
+  background:var(--amber);transform:scaleX(0);transform-origin:left;
+}
+.anim .hero h1.in em::after{transform:scaleX(1);transition:transform .7s cubic-bezier(.22,.75,.28,1) .55s}
+
+/* week strip fills in, monday lands last and pulses */
+.anim .day.rise.in{transition-duration:.45s}
+@keyframes mondayPulse{
+  0%{box-shadow:0 0 0 0 rgba(233,161,59,.55)}
+  100%{box-shadow:0 0 0 16px rgba(233,161,59,0)}
+}
+.anim .day.on.in{animation:mondayPulse 1.5s ease-out .55s 2}
+
+/* accordions open with the content, not instantly */
+@keyframes progOpen{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+.prog[open] .prog-body{animation:progOpen .32s cubic-bezier(.22,.75,.28,1)}
+.prog-open{transition:background .2s ease,color .2s ease,border-color .2s ease,transform .2s ease}
+.prog summary:hover .prog-open{transform:scale(1.12)}
+
+@keyframes faqOpen{from{opacity:0}to{opacity:1}}
+.faq details[open] p{animation:faqOpen .3s ease}
+
+/* builder feedback */
+@keyframes chipPop{50%{transform:scale(1.09)}}
+.chip.pop{animation:chipPop .24s ease}
+@keyframes outSwap{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+.builder-out.flash .track-name,.builder-out.flash .track-meta{animation:outSwap .3s ease}
+.builder{transition:border-top-color .3s ease}
+
+.btn{transition:background .15s ease,border-color .15s ease,transform .12s ease}
+.btn:active{transform:translateY(1px)}
+
+/* ---------- preview link ---------- */
+.preview{
+  display:inline-flex;align-items:center;gap:9px;margin-top:20px;
+  font-weight:600;font-size:0.97rem;color:var(--blue);text-decoration:none;
+  border-bottom:1.5px solid var(--blue-soft);padding-bottom:3px;
+  transition:border-color .18s ease;
+}
+.preview:hover{border-bottom-color:var(--blue)}
+.preview .play{
+  width:26px;height:26px;flex:none;border-radius:50%;background:var(--blue);
+  display:grid;place-items:center;transition:transform .18s ease;
+}
+.preview:hover .play{transform:scale(1.12)}
+.preview .play::before{
+  content:"";border-left:7px solid #fff;border-top:5px solid transparent;
+  border-bottom:5px solid transparent;margin-left:2px;
+}
+.preview small{display:block;color:var(--muted);font-weight:400}
+
+/* ---------- access steps ---------- */
+.access{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:38px;border-top:2px solid var(--ink)}
+.step{padding:24px 24px 26px 0;border-right:1px solid var(--line-strong)}
+.step:last-child{border-right:0;padding-right:0}
+.step:not(:first-child){padding-left:24px}
+.step .n{
+  font-family:"IBM Plex Mono",monospace;font-size:0.82rem;color:var(--blue);
+  display:block;margin-bottom:10px;
+}
+.step h3{font-size:1.15rem;margin-bottom:8px}
+.step p{color:var(--ink-2);font-size:0.96rem}
+.free-note{
+  margin-top:34px;background:var(--amber-soft);border-left:4px solid var(--amber);
+  padding:20px 24px;max-width:74ch;
+}
+.free-note b{font-family:"Bricolage Grotesque",sans-serif;font-size:1.1rem}
+.free-note p{margin-top:6px;color:var(--ink-2)}
+
+@media (max-width:900px){
+  :root{--step-4:2.3rem;--step-3:1.75rem}
+  .hero-grid,.about,.contact-grid,.prog-body{grid-template-columns:1fr;gap:34px}
+  .rhythm,.formats{grid-template-columns:1fr}
+  .access{grid-template-columns:1fr}
+  .step{border-right:0;border-bottom:1px solid var(--line-strong);padding:22px 0 24px}
+  .step:not(:first-child){padding-left:0}
+  .step:last-child{border-bottom:0}
+  .fmt{border-right:0;border-bottom:1px solid var(--line-strong)}
+  .fmt:last-child{border-bottom:0}
+  .prog-body{padding-left:4px}
+  .band{padding:60px 0}
+  .top nav{display:none}
+  .hero-facts{grid-template-columns:1fr 1fr;gap:18px}
+}
+@media (prefers-reduced-motion:reduce){
+  *{transition:none !important;animation:none !important}
+  .anim .rise{opacity:1 !important;transform:none !important}
+  .anim .hero h1 em::after{transform:scaleX(1) !important}
+}
+</style>
+</head>
+<body>
+
+<header class="wrap top">
+  <div class="brand"><b>Elie</b><span>Software training</span></div>
+  <nav>
+    <a href="#how">How it works</a>
+    <a href="#programs">Programs</a>
+    <a href="#access">Videos</a>
+    <a href="#formats">Formats</a>
+    <a href="#about">Instructor</a>
+    <a href="#enroll">Enroll</a>
+  </nav>
+</header>
+
+<main>
+
+<!-- HERO -->
+<section class="wrap hero">
+  <div class="hero-grid">
+    <div>
+      <h1>Learn to build software the way it&rsquo;s built <em>at work</em>.</h1>
+      <p class="lede">Recorded lessons you watch whenever you want, a live session with me every Monday, and one-on-one hours when you need to get unstuck. Five programs, or any mix of the technologies in them.</p>
+      <div class="btn-row">
+        <a class="btn" href="#enroll">Book an intro call</a>
+        <a class="btn btn-ghost" href="#programs">See the programs</a>
+      </div>
+      <div class="hero-facts">
+        <div><b>5</b>programs</div>
+        <div><b>Mon</b>live session, every week</div>
+        <div><b>1:1</b>hours on request</div>
+      </div>
+    </div>
+
+    <!-- Track builder -->
+    <div class="builder">
+      <h2>Build your own track</h2>
+      <p class="note">Pick the technologies you want. I&rsquo;ll put together a plan around them.</p>
+
+      <div class="chipset">
+        <h3>Front end</h3>
+        <div class="chips">
+          <button class="chip" type="button" aria-pressed="false" data-w="3" data-g="front">HTML &amp; CSS</button>
+          <button class="chip" type="button" aria-pressed="false" data-w="3" data-g="front">JavaScript</button>
+          <button class="chip" type="button" aria-pressed="false" data-w="4" data-g="front">React</button>
+          <button class="chip" type="button" aria-pressed="false" data-w="4" data-g="front">Angular</button>
+        </div>
+      </div>
+
+      <div class="chipset">
+        <h3>Back end</h3>
+        <div class="chips">
+          <button class="chip" type="button" aria-pressed="false" data-w="4" data-g="back">Node.js</button>
+          <button class="chip" type="button" aria-pressed="false" data-w="2" data-g="back">Express</button>
+          <button class="chip" type="button" aria-pressed="false" data-w="5" data-g="back">.NET Core</button>
+        </div>
+      </div>
+
+      <div class="chipset">
+        <h3>Database</h3>
+        <div class="chips">
+          <button class="chip" type="button" aria-pressed="false" data-w="2" data-g="data">MongoDB</button>
+          <button class="chip" type="button" aria-pressed="false" data-w="2" data-g="data">SQL Server</button>
+        </div>
+      </div>
+
+      <div class="chipset">
+        <h3>Mobile &amp; DevOps</h3>
+        <div class="chips">
+          <button class="chip" type="button" aria-pressed="false" data-w="4" data-g="mobile">React Native</button>
+          <button class="chip" type="button" aria-pressed="false" data-w="3" data-g="ops">Azure</button>
+          <button class="chip" type="button" aria-pressed="false" data-w="3" data-g="ops">AWS</button>
+          <button class="chip" type="button" aria-pressed="false" data-w="2" data-g="ops">Docker</button>
+          <button class="chip" type="button" aria-pressed="false" data-w="2" data-g="ops">CI/CD</button>
+          <button class="chip" type="button" aria-pressed="false" data-w="1" data-g="ops">Git</button>
+        </div>
+      </div>
+
+      <div class="builder-out">
+        <p class="track-name" id="trackName">Nothing selected yet</p>
+        <p class="track-meta" id="trackMeta">Choose at least one technology to see a suggested plan.</p>
+        <a class="btn" id="trackCta" href="#enroll" aria-disabled="true">Request this track</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="band band-ink" id="how">
+  <div class="wrap">
+    <h2 class="h-sec">Three ways of learning, in the same week</h2>
+    <p class="lede">You are never waiting for the next class to make progress, and never stuck alone on a bug for three days.</p>
+
+    <div class="week" aria-hidden="true">
+      <div class="day"><b>Sun</b>watch</div>
+      <div class="day on"><b>Mon</b>live session</div>
+      <div class="day"><b>Tue</b>build</div>
+      <div class="day"><b>Wed</b>build</div>
+      <div class="day"><b>Thu</b>1:1 slot</div>
+      <div class="day"><b>Fri</b>build</div>
+      <div class="day"><b>Sat</b>catch up</div>
+    </div>
+
+    <div class="rhythm">
+      <div>
+        <span class="tag">Recorded</span>
+        <h3>Video lessons on demand</h3>
+        <p>Every topic is recorded and stays available. Watch at your pace, rewind the parts that matter, and come to the live session with real questions instead of notes.</p>
+      </div>
+      <div>
+        <span class="tag live">Every Monday</span>
+        <h3>Live group session</h3>
+        <p>One hour and a half with the group: I code live, review what you built during the week, answer questions, and set the next task. Recorded too, if you miss it.</p>
+      </div>
+      <div>
+        <span class="tag">On request</span>
+        <h3>One-on-one hours</h3>
+        <p>Private sessions for debugging your own project, preparing for interviews, a code review, or moving faster than the group. Book them one at a time or as a package.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROGRAMS -->
+<section class="band wrap" id="programs">
+  <h2 class="h-sec">Programs</h2>
+  <p class="lede">Each one ends with a project you can show an employer, deployed and running, not a folder of exercises.</p>
+
+  <div class="programs">
+
+    <details class="prog" open>
+      <summary>
+        <span class="prog-num">01</span>
+        <span>
+          <span class="prog-title">MERN full stack</span>
+          <span class="prog-stack">React · Node.js · Express · MongoDB</span>
+        </span>
+        <span class="prog-open" aria-hidden="true">+</span>
+      </summary>
+      <div class="prog-body">
+        <ul>
+          <li>JavaScript and ES6+ for people who will read other people&rsquo;s code</li>
+          <li>React: components, state, hooks, routing, forms, data fetching</li>
+          <li>Node.js and Express: REST APIs, middleware, error handling, validation</li>
+          <li>MongoDB and Mongoose: schema design, relations, indexes, aggregation</li>
+          <li>Authentication with JWT, roles and permissions</li>
+          <li>File uploads, pagination, search, and caching basics</li>
+          <li>Git workflow, environment config, and deployment to the cloud</li>
+          <li>Final project: a full application, front to back, live on a URL</li>
+        </ul>
+        <div class="prog-side">
+          <dl>
+            <dt>Level</dt><dd>Beginner to job-ready</dd>
+            <dt>Length</dt><dd>12 weeks</dd>
+            <dt>Prerequisite</dt><dd>Basic HTML and CSS</dd>
+            <dt>You finish with</dt><dd>A deployed full-stack app</dd>
+          </dl>
+          <a class="preview" data-preview="mern" href="#"><span class="play" aria-hidden="true"></span><span>Watch a free lesson<small>Building your first Express API · no sign-up</small></span></a>
+        </div>
+      </div>
+    </details>
+
+    <details class="prog">
+      <summary>
+        <span class="prog-num">02</span>
+        <span>
+          <span class="prog-title">Angular, .NET Core &amp; SQL Server</span>
+          <span class="prog-stack">Angular · ASP.NET Core · SQL Server</span>
+        </span>
+        <span class="prog-open" aria-hidden="true">+</span>
+      </summary>
+      <div class="prog-body">
+        <ul>
+          <li>TypeScript fundamentals and Angular architecture</li>
+          <li>Components, services, dependency injection, RxJS, reactive forms</li>
+          <li>C# and ASP.NET Core Web API: controllers, DI, configuration</li>
+          <li>Clean architecture and domain-driven design, applied to a real project</li>
+          <li>Entity Framework Core, migrations, and SQL Server data modelling</li>
+          <li>Writing and tuning SQL: joins, indexes, stored procedures</li>
+          <li>Identity, JWT, and securing an enterprise API</li>
+          <li>Final project: an internal business application with reporting</li>
+        </ul>
+        <div class="prog-side">
+          <dl>
+            <dt>Level</dt><dd>Beginner to job-ready</dd>
+            <dt>Length</dt><dd>14 weeks</dd>
+            <dt>Prerequisite</dt><dd>Any programming basics</dd>
+            <dt>You finish with</dt><dd>An enterprise-style app</dd>
+          </dl>
+          <a class="preview" data-preview="dotnet" href="#"><span class="play" aria-hidden="true"></span><span>Watch a free lesson<small>Structuring a .NET Core project · no sign-up</small></span></a>
+        </div>
+      </div>
+    </details>
+
+    <details class="prog">
+      <summary>
+        <span class="prog-num">03</span>
+        <span>
+          <span class="prog-title">DevOps &amp; cloud</span>
+          <span class="prog-stack">Azure · AWS · Docker · CI/CD</span>
+        </span>
+        <span class="prog-open" aria-hidden="true">+</span>
+      </summary>
+      <div class="prog-body">
+        <ul>
+          <li>Linux, shell, and networking basics you actually need day to day</li>
+          <li>Git branching strategies for teams</li>
+          <li>Docker: images, layers, volumes, multi-stage builds, Compose</li>
+          <li>CI/CD pipelines with GitHub Actions and Azure DevOps</li>
+          <li>Deploying on Azure and AWS: compute, storage, managed databases</li>
+          <li>Secrets management, environment separation, and zero-downtime releases</li>
+          <li>Monitoring, logging, and reading production incidents</li>
+          <li>Final project: a pipeline that takes a commit to production automatically</li>
+        </ul>
+        <div class="prog-side">
+          <dl>
+            <dt>Level</dt><dd>Developers with some experience</dd>
+            <dt>Length</dt><dd>10 weeks</dd>
+            <dt>Prerequisite</dt><dd>You can build a small app</dd>
+            <dt>You finish with</dt><dd>A working CI/CD pipeline</dd>
+          </dl>
+          <a class="preview" data-preview="devops" href="#"><span class="play" aria-hidden="true"></span><span>Watch a free lesson<small>Your first Dockerfile, line by line · no sign-up</small></span></a>
+        </div>
+      </div>
+    </details>
+
+    <details class="prog">
+      <summary>
+        <span class="prog-num">04</span>
+        <span>
+          <span class="prog-title">Mobile app development</span>
+          <span class="prog-stack">React Native · Node.js · Express · MongoDB</span>
+        </span>
+        <span class="prog-open" aria-hidden="true">+</span>
+      </summary>
+      <div class="prog-body">
+        <ul>
+          <li>React and React Native: components, navigation, native styling</li>
+          <li>State management, offline storage, and handling flaky connections</li>
+          <li>Building the API behind the app with Node.js, Express, and MongoDB</li>
+          <li>Authentication, push notifications, camera, maps, and permissions</li>
+          <li>Performance: lists, images, re-renders, and app size</li>
+          <li>Builds and signing for iOS and Android</li>
+          <li>Publishing to the App Store and Google Play, and shipping updates</li>
+          <li>Final project: an app running on a real device, submitted to a store</li>
+        </ul>
+        <div class="prog-side">
+          <dl>
+            <dt>Level</dt><dd>Beginner to job-ready</dd>
+            <dt>Length</dt><dd>12 weeks</dd>
+            <dt>Prerequisite</dt><dd>JavaScript basics</dd>
+            <dt>You finish with</dt><dd>A published mobile app</dd>
+          </dl>
+          <a class="preview" data-preview="mobile" href="#"><span class="play" aria-hidden="true"></span><span>Watch a free lesson<small>Screens and navigation in React Native · no sign-up</small></span></a>
+        </div>
+      </div>
+    </details>
+
+    <details class="prog">
+      <summary>
+        <span class="prog-num">05</span>
+        <span>
+          <span class="prog-title">Web fundamentals</span>
+          <span class="prog-stack">HTML · CSS · JavaScript</span>
+        </span>
+        <span class="prog-open" aria-hidden="true">+</span>
+      </summary>
+      <div class="prog-body">
+        <ul>
+          <li>HTML that is structured, accessible, and readable</li>
+          <li>CSS layout with flexbox and grid, and responsive design that holds up</li>
+          <li>JavaScript from variables to functions, arrays, objects, and the DOM</li>
+          <li>Events, forms, validation, and talking to an API with fetch</li>
+          <li>Async JavaScript: promises, async/await, error handling</li>
+          <li>Debugging in the browser and reading errors without panicking</li>
+          <li>Git, GitHub, and putting your work online</li>
+          <li>Final project: a responsive site you built and deployed yourself</li>
+        </ul>
+        <div class="prog-side">
+          <dl>
+            <dt>Level</dt><dd>Complete beginners</dd>
+            <dt>Length</dt><dd>8 weeks</dd>
+            <dt>Prerequisite</dt><dd>None</dd>
+            <dt>You finish with</dt><dd>Your first deployed site</dd>
+          </dl>
+          <a class="preview" data-preview="web" href="#"><span class="play" aria-hidden="true"></span><span>Watch a free lesson<small>How CSS grid actually works · no sign-up</small></span></a>
+        </div>
+      </div>
+    </details>
+
+  </div>
+
+  <p class="lede" style="margin-top:28px">Want React with .NET, or React Native with SQL Server, or only the DevOps half? Any combination works. Use the builder at the top and tell me what you need.</p>
+</section>
+
+<!-- ACCESS -->
+<section class="band-tight wrap" id="access">
+  <hr class="rule">
+  <div style="height:56px"></div>
+  <h2 class="h-sec">Watching the videos</h2>
+  <p class="lede">Every lesson is a recording you stream in your browser. Nothing to install, nothing to download unless you want to.</p>
+
+  <div class="access">
+    <div class="step">
+      <span class="n">Step 1</span>
+      <h3>Enroll and pay</h3>
+      <p>Pick your program and format, and pay by card, bank transfer, or Whish. You get a receipt straight away.</p>
+    </div>
+    <div class="step">
+      <span class="n">Step 2</span>
+      <h3>Get your login</h3>
+      <p>Within a few hours I send you an email with a link to set your password on the course portal. One account, yours only.</p>
+    </div>
+    <div class="step">
+      <span class="n">Step 3</span>
+      <h3>Open your program</h3>
+      <p>Sign in and your program is there, split into sections and lessons, with the exercise files for each one attached.</p>
+    </div>
+    <div class="step">
+      <span class="n">Step 4</span>
+      <h3>Watch on anything</h3>
+      <p>Phone, laptop, or tablet. It remembers where you stopped, plays from 0.75&times; to 2&times;, and has subtitles.</p>
+    </div>
+  </div>
+
+  <div class="free-note">
+    <b>One lesson from every program is free to watch</b>
+    <p>Open any program above and hit the play button. No account, no card, no email. Watch how a topic is explained before you decide whether to pay for the rest.</p>
+  </div>
+
+  <p class="note" style="margin-top:26px">Each Monday session is recorded and added to your program within a day, so the library keeps growing while you are enrolled. Your access stays open for 12 months after the program ends, including the recordings added after you finish.</p>
+</section>
+
+<!-- FORMATS -->
+<section class="band-tight wrap" id="formats">
+  <hr class="rule">
+  <div style="height:56px"></div>
+  <h2 class="h-sec">Ways to join</h2>
+  <p class="lede">Same material, different amounts of attention.</p>
+
+  <div class="formats">
+    <div class="fmt">
+      <h3>Group program</h3>
+      <p>The full experience, with a cohort.</p>
+      <ul>
+        <li>All recorded lessons for your program</li>
+        <li>Live session every Monday</li>
+        <li>Weekly tasks with feedback</li>
+        <li>Private group chat for questions</li>
+        <li>Certificate on completion</li>
+      </ul>
+    </div>
+    <div class="fmt feature">
+      <h3>One-on-one</h3>
+      <p>Private sessions, scheduled around you.</p>
+      <ul>
+        <li>Everything in the group program</li>
+        <li>Sessions at your pace and level</li>
+        <li>Code review on your own project</li>
+        <li>Interview and portfolio preparation</li>
+        <li>Single hours or a package</li>
+      </ul>
+    </div>
+  </div>
+  <p class="note" style="margin-top:18px">Ask about pricing and the next start date &mdash; payment plans are available.</p>
+</section>
+
+<!-- INSTRUCTOR -->
+<section class="band wrap" id="about">
+  <div class="about">
+    <div class="about-card">
+      <dl>
+        <dt>Instructor</dt><dd>Elie</dd>
+        <dt>Role</dt><dd>CTO, Bug Bakery</dd>
+        <dt>Experience</dt><dd>6+ years building software</dd>
+        <dt>Based in</dt><dd>Beirut, teaching online across MENA and the Gulf</dd>
+        <dt>Works with</dt><dd>React, React Native, Node.js, .NET, MongoDB, SQL Server, Azure, AWS, GCP</dd>
+      </dl>
+    </div>
+    <div>
+      <h2 class="h-sec">Taught by someone who ships</h2>
+      <p class="lede">I run the technical side of a software agency. The code I teach is the code I write for clients: applications in production, mobile apps in the stores, APIs that have to stay up.</p>
+      <p style="margin-top:18px;color:var(--ink-2);max-width:62ch">That changes what gets taught. You learn how to structure a project so it survives its second year, how to read an error instead of pasting it somewhere, how to review your own work before someone else does. The tutorials that stop at &ldquo;it runs on my machine&rdquo; are the reason so many juniors struggle in their first job.</p>
+      <p style="margin-top:18px;color:var(--ink-2);max-width:62ch">I have taught full-stack, backend, and web fundamentals to students, interns, and working developers. Groups stay small so I can actually look at your code.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="band-tight wrap">
+  <hr class="rule">
+  <div style="height:48px"></div>
+  <h2 class="h-sec">Questions</h2>
+  <div class="faq">
+    <details>
+      <summary>I have never written code. Can I start?</summary>
+      <p>Yes. Start with web fundamentals, then move into MERN, mobile, or the .NET track. The other programs assume you can already build a small page and read basic JavaScript.</p>
+    </details>
+    <details>
+      <summary>What if I miss the Monday session?</summary>
+      <p>Every live session is recorded and posted the same day. You can send your questions before the session and I will answer them on the call.</p>
+    </details>
+    <details>
+      <summary>Can I watch something before I pay?</summary>
+      <p>Yes. Each program has one full lesson open to everyone, linked inside the program above. No account and no card needed.</p>
+    </details>
+    <details>
+      <summary>How long do I keep the videos?</summary>
+      <p>Twelve months after your program ends, including any recording added in that time. The Monday sessions are recorded and appear in your program within a day.</p>
+    </details>
+    <details>
+      <summary>Can I download the lessons?</summary>
+      <p>The videos stream rather than download, so they stay tied to your account. If your connection is unreliable, drop the quality to 480p, or tell me and I will find a way that works for you.</p>
+    </details>
+    <details>
+      <summary>What language are the sessions in?</summary>
+      <p>English or Arabic, whichever suits the group. Course material and code are in English.</p>
+    </details>
+    <details>
+      <summary>How much time do I need per week?</summary>
+      <p>Around six to eight hours: the recorded lessons, the live session, and the weekly task. Less than that and progress gets slow.</p>
+    </details>
+    <details>
+      <summary>Do I get a certificate?</summary>
+      <p>Yes, on completing the program and its final project. The project itself will do more for you in an interview.</p>
+    </details>
+  </div>
+</section>
+
+<!-- ENROLL -->
+<section class="band band-ink" id="enroll">
+  <div class="wrap contact-grid">
+    <div>
+      <h2 class="h-sec">Tell me what you want to learn</h2>
+      <p class="lede">Send this and I will reply with the curriculum, the schedule, and pricing for the format you picked. No obligation.</p>
+      <div class="contact-links">
+        <a id="linkEmail" href="#">Email</a>
+        <a id="linkWhatsapp" href="#">WhatsApp</a>
+        <a id="linkLinkedin" href="#">LinkedIn</a>
+      </div>
+    </div>
+
+    <div>
+      <div class="field">
+        <label for="fName">Your name</label>
+        <input id="fName" type="text" placeholder="Full name">
+      </div>
+      <div class="field">
+        <label for="fProgram">Program</label>
+        <select id="fProgram">
+          <option>MERN full stack</option>
+          <option>Angular, .NET Core &amp; SQL Server</option>
+          <option>DevOps &amp; cloud</option>
+          <option>Mobile app development</option>
+          <option>Web fundamentals</option>
+          <option>A custom combination</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="fFormat">Format</label>
+        <select id="fFormat">
+          <option>Group program</option>
+          <option>One-on-one</option>
+          <option>Not sure yet</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="fMsg">Where are you starting from?</label>
+        <textarea id="fMsg" placeholder="Your level, your goal, and when you want to start."></textarea>
+      </div>
+      <button class="btn btn-light" type="button" id="sendBtn">Send my request</button>
+      <p class="note" style="margin-top:10px">This opens your email app with the message ready.</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="wrap">
+  <span>Software training by Elie &mdash; Beirut, Lebanon</span>
+  <span><a href="#programs">Programs</a> &nbsp;&middot;&nbsp; <a href="#enroll">Enroll</a></span>
+</footer>
+
+<script>
+/* ---- Change these three lines and the whole page updates ---- */
+const CONFIG = {
+  email: "you@yourdomain.com",
+  whatsapp: "9613000000",            // international format, digits only
+  linkedin: "https://www.linkedin.com/in/your-profile/",
+
+  // free preview lesson for each program (YouTube, Vimeo, anything)
+  previews: {
+    mern:   "",
+    dotnet: "",
+    devops: "",
+    mobile: "",
+    web:    ""
+  }
+};
+
+/* ---- Free preview links ---- */
+document.querySelectorAll(".preview").forEach(a => {
+  const url = CONFIG.previews[a.dataset.preview];
+  if (url) {
+    a.href = url;
+    a.target = "_blank";
+    a.rel = "noopener";
+  } else {
+    a.href = "#enroll";
+    a.querySelector("small").textContent = "ask me for the preview link";
+  }
+});
+
+document.getElementById("linkEmail").href = "mailto:" + CONFIG.email;
+document.getElementById("linkEmail").textContent = CONFIG.email;
+document.getElementById("linkWhatsapp").href = "https://wa.me/" + CONFIG.whatsapp;
+document.getElementById("linkWhatsapp").textContent = "WhatsApp +" + CONFIG.whatsapp;
+document.getElementById("linkLinkedin").href = CONFIG.linkedin;
+document.getElementById("linkLinkedin").textContent = "Message me on LinkedIn";
+
+/* ---- Track builder ---- */
+const chips = Array.from(document.querySelectorAll(".chip"));
+const trackName = document.getElementById("trackName");
+const trackMeta = document.getElementById("trackMeta");
+const trackCta = document.getElementById("trackCta");
+
+const LABELS = {
+  front: "front end", back: "back end", data: "data",
+  mobile: "mobile", ops: "cloud and delivery"
+};
+
+function selected() {
+  return chips.filter(c => c.getAttribute("aria-pressed") === "true");
+}
+
+function nameFor(picked) {
+  const names = picked.map(c => c.textContent.trim());
+  const groups = new Set(picked.map(c => c.dataset.g));
+  const set = new Set(names);
+  if (set.has("React") && set.has("Node.js") && set.has("MongoDB")) return "MERN full stack track";
+  if (set.has("Angular") && set.has(".NET Core")) return "Angular and .NET track";
+  if (set.has("React Native")) return "Mobile development track";
+  if (groups.size === 1 && groups.has("ops")) return "DevOps and cloud track";
+  if (groups.size === 1 && groups.has("front")) return "Front-end track";
+  if (groups.size >= 3) return "Custom full-stack track";
+  return "Custom track";
+}
+
+function update() {
+  const picked = selected();
+  const out = document.querySelector(".builder-out");
+  out.classList.remove("flash");
+  void out.offsetWidth;
+  out.classList.add("flash");
+  if (!picked.length) {
+    trackName.textContent = "Nothing selected yet";
+    trackMeta.textContent = "Choose at least one technology to see a suggested plan.";
+    trackCta.setAttribute("aria-disabled", "true");
+    trackCta.href = "#enroll";
+    return;
+  }
+  const weeks = Math.min(20, Math.max(4, Math.round(
+    picked.reduce((sum, c) => sum + Number(c.dataset.w), 0) * 0.8
+  )));
+  const list = picked.map(c => c.textContent.trim());
+  trackName.textContent = nameFor(picked);
+  trackMeta.textContent = list.join(", ") + " · about " + weeks + " weeks · one live session a week";
+  trackCta.removeAttribute("aria-disabled");
+
+  const body =
+    "Hi Elie,%0D%0A%0D%0AI would like a track covering: " + encodeURIComponent(list.join(", ")) +
+    ".%0D%0A%0D%0AMy level: %0D%0AWhen I want to start: %0D%0APreferred format (group / one-on-one / team): %0D%0A%0D%0AThanks,";
+  trackCta.href = "mailto:" + CONFIG.email +
+    "?subject=" + encodeURIComponent("Custom training track") + "&body=" + body;
+}
+
+chips.forEach(chip => {
+  chip.addEventListener("click", () => {
+    const on = chip.getAttribute("aria-pressed") === "true";
+    chip.setAttribute("aria-pressed", on ? "false" : "true");
+    chip.classList.remove("pop");
+    void chip.offsetWidth;
+    chip.classList.add("pop");
+    update();
+  });
+});
+
+/* ---- Enrolment form -> email ---- */
+document.getElementById("sendBtn").addEventListener("click", () => {
+  const name = document.getElementById("fName").value.trim() || "(no name given)";
+  const program = document.getElementById("fProgram").value;
+  const format = document.getElementById("fFormat").value;
+  const msg = document.getElementById("fMsg").value.trim() || "(nothing written)";
+  const body =
+    "Name: " + name + "\r\n" +
+    "Program: " + program + "\r\n" +
+    "Format: " + format + "\r\n\r\n" +
+    "Starting from:\r\n" + msg + "\r\n";
+  window.location.href = "mailto:" + CONFIG.email +
+    "?subject=" + encodeURIComponent("Training request: " + program) +
+    "&body=" + encodeURIComponent(body);
+});
+
+/* ---- Motion ---- */
+const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+document.documentElement.classList.add("anim");
+
+const groups = [
+  [".hero h1", ".hero .lede", ".hero .btn-row", ".hero-facts", ".builder"],
+  ["#how .h-sec", "#how .lede"],
+  [".day"],
+  [".rhythm > div"],
+  ["#programs .h-sec", "#programs .lede", ".prog"],
+  ["#access .h-sec", "#access .lede", ".step", ".free-note"],
+  ["#formats .h-sec", "#formats .lede", ".fmt"],
+  [".about-card", ".about > div:last-child"],
+  [".faq"].concat(["#enroll .h-sec", "#enroll .lede", "#enroll .contact-links", "#enroll .field", "#sendBtn"])
+];
+
+const io = "IntersectionObserver" in window ? new IntersectionObserver((entries, obs) => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    e.target.classList.add("in");
+    obs.unobserve(e.target);
+  });
+}, { rootMargin: "0px 0px -12% 0px", threshold: 0.08 }) : null;
+
+groups.forEach(sel => {
+  const els = document.querySelectorAll(sel.join(","));
+  els.forEach((el, i) => {
+    el.classList.add("rise");
+    el.style.transitionDelay = Math.min(i * 70, 520) + "ms";
+    if (io && !reduced) { io.observe(el); } else { el.classList.add("in"); }
+  });
+});
+
+/* hero plays on load rather than on scroll */
+window.requestAnimationFrame(() => {
+  document.querySelectorAll(".hero .rise").forEach(el => el.classList.add("in"));
+});
+
+/* ---- Accordion +/- ---- */
+document.querySelectorAll(".prog").forEach(d => {
+  const icon = d.querySelector(".prog-open");
+  const sync = () => { icon.textContent = d.open ? "\u2212" : "+"; };
+  d.addEventListener("toggle", sync);
+  sync();
+});
+</script>
+</body>
+</html>
