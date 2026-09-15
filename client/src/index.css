@@ -3,3 +3,26 @@
 
 /* Classes named in shared/styles.ts and shared/ui must survive the build. */
 @source "../../shared";
+
+/*
+ * Deterrents for the bootcamp workspace. These raise the effort of moving an
+ * exercise into a chatbot; they are not enforcement, and nothing in a browser
+ * can be. See client/src/bootcamp/protection.tsx.
+ */
+html.screen-hidden .protected-surface {
+  filter: blur(14px);
+  pointer-events: none;
+}
+
+/* Print-to-PDF is the easiest way to walk off with a whole exercise. */
+@media print {
+  .protected-surface {
+    display: none !important;
+  }
+
+  .protected-surface-notice::after {
+    content: "This page cannot be printed.";
+    display: block;
+    font-family: var(--font-mono, monospace);
+  }
+}

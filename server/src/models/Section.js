@@ -18,6 +18,7 @@ export const SECTION_TYPES = [
   "cta",
   "callout",
   "programs",
+  "bootcamp",
   "faq",
   "builder",
 ];

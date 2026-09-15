@@ -1,9 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { api } from "./client";
 import type {
+  AiReview,
+  AiStatus,
   Availability,
   Booking,
   BookingStatus,
+  Enrollment,
   Faq,
   Lead,
   Lesson,
@@ -12,8 +15,12 @@ import type {
   Program,
   Section,
   SiteSettings,
+  Step,
+  Submission,
+  SubmissionStatus,
   Technology,
   Theme,
+  Track,
 } from "@shared/types";
 
 /** Resource names line up with the socket payload's `resource` field. */
@@ -24,7 +31,9 @@ export type ResourceName =
   | "faqs"
   | "technologies"
   | "media"
-  | "leads";
+  | "leads"
+  | "tracks"
+  | "steps";
 
 export interface ResourceMap {
   sections: Section;
@@ -34,6 +43,8 @@ export interface ResourceMap {
   technologies: Technology;
   media: Media;
   leads: Lead;
+  tracks: Track;
+  steps: Step;
 }
 
 export const key = {
@@ -209,5 +220,68 @@ export function useDeleteBooking() {
   return useMutation({
     mutationFn: (id: string) => api<OkResponse>(`/admin/bookings/${id}`, { method: "DELETE" }),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: bookingKeys.bookings }),
+  });
+}
+
+/* ---------------------------- bootcamp ----------------------------- */
+
+export const reviewKeys = {
+  submissions: ["admin", "submissions"] as const,
+  stats: ["admin", "submissions", "stats"] as const,
+  enrollments: ["admin", "enrollments"] as const,
+  ai: ["admin", "ai"] as const,
+};
+
+/** A submission as the queue serves it, with the names already resolved. */
+export type QueuedSubmission = Submission & { escalationLabel?: string };
+
+export interface QueueStats {
+  total: number;
+  blocking: number;
+  queue: Array<{ escalation: string; label: string; count: number }>;
+}
+
+export function useSubmissions(params?: Record<string, string>) {
+  return useQuery({
+    queryKey: params ? ([...reviewKeys.submissions, params] as const) : reviewKeys.submissions,
+    queryFn: () => api<QueuedSubmission[]>(`/admin/submissions${qs(params)}`),
+  });
+}
+
+export function useQueueStats() {
+  return useQuery({
+    queryKey: reviewKeys.stats,
+    queryFn: () => api<QueueStats>("/admin/submissions/stats"),
+  });
+}
+
+/** Your verdict overrides whatever the checks and the reviewer decided. */
+export function useReviewSubmission() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, status, note }: { id: string; status: SubmissionStatus; note?: string }) =>
+      api<QueuedSubmission>(`/admin/submissions/${id}`, { method: "PATCH", body: { status, note } }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: reviewKeys.submissions });
+      queryClient.invalidateQueries({ queryKey: reviewKeys.stats });
+    },
+  });
+}
+
+export function useEnrollments(params?: Record<string, string>) {
+  return useQuery({
+    queryKey: params ? ([...reviewKeys.enrollments, params] as const) : reviewKeys.enrollments,
+    queryFn: () => api<Enrollment[]>(`/admin/enrollments${qs(params)}`),
+  });
+}
+
+export function useAiStatus() {
+  return useQuery({ queryKey: reviewKeys.ai, queryFn: () => api<AiStatus>("/admin/ai") });
+}
+
+/** Smoke test, so a broken reviewer surfaces here rather than mid-cohort. */
+export function useTestAi() {
+  return useMutation({
+    mutationFn: () => api<{ ok: boolean; review: AiReview }>("/admin/ai/test", { method: "POST" }),
   });
 }

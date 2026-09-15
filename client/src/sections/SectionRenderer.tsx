@@ -14,6 +14,7 @@ import {
   WeekBlock,
 } from "./blocks";
 import { ProgramsSection } from "./ProgramsSection";
+import { BootcampSection } from "./BootcampSection";
 import { FaqSection } from "./FaqSection";
 import { TrackBuilder } from "./TrackBuilder";
 import type { Section, SectionType, SitePayload } from "@shared/types";
@@ -72,6 +73,8 @@ function SectionBody({ section, site }: SectionRendererProps) {
       return <GalleryBlock section={section} />;
     case "programs":
       return <ProgramsSection section={section} programs={programs} />;
+    case "bootcamp":
+      return <BootcampSection section={section} />;
     case "faq":
       return <FaqSection faqs={faqs} />;
     case "builder":

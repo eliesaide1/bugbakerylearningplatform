@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useRealtime } from "../realtime/RealtimeProvider";
+import { useTrainee } from "../state/TraineeContext";
 import { useActiveSection } from "../hooks/useActiveSection";
 import { Container, Image } from "@shared/ui";
 import type { Section, SiteSettings } from "@shared/types";
@@ -14,6 +15,7 @@ interface HeaderProps {
 export function Header({ settings, sections = [] }: HeaderProps) {
   const [open, setOpen] = useState(false);
   const { connected } = useRealtime();
+  const { trainee } = useTrainee();
   const { pathname } = useLocation();
   const onHome = pathname === "/";
 
@@ -57,6 +59,12 @@ export function Header({ settings, sections = [] }: HeaderProps) {
         </Link>
 
         <nav className="hidden items-center gap-6 text-[0.97rem] md:flex">
+          <Link
+            to="/bootcamp"
+            className="py-1 font-semibold text-ink-2 no-underline transition-colors hover:text-primary"
+          >
+            Bootcamp
+          </Link>
           {links.map((link) => (
             <a
               key={link.id}
@@ -74,6 +82,15 @@ export function Header({ settings, sections = [] }: HeaderProps) {
               />
             </a>
           ))}
+          {trainee ? (
+            <Link
+              to="/bootcamp"
+              title={`Signed in as ${trainee.name}`}
+              className="py-1 font-mono text-[0.82rem] text-muted no-underline hover:text-primary"
+            >
+              {trainee.name.split(" ")[0]}
+            </Link>
+          ) : null}
         </nav>
 
         <button
@@ -92,6 +109,13 @@ export function Header({ settings, sections = [] }: HeaderProps) {
       {open ? (
         <nav className="animate-panel-open border-t border-line bg-paper md:hidden">
           <Container className="flex flex-col py-2">
+            <Link
+              to="/bootcamp"
+              onClick={() => setOpen(false)}
+              className="border-l-2 border-l-transparent border-b border-line py-3 pl-3 font-semibold text-ink-2 no-underline"
+            >
+              Bootcamp
+            </Link>
             {links.map((link) => (
               <a
                 key={link.id}

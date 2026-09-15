@@ -8,6 +8,8 @@ import { Lesson } from "../models/Lesson.js";
 import { Section } from "../models/Section.js";
 import { Faq } from "../models/Faq.js";
 import { Technology } from "../models/Technology.js";
+import { Track } from "../models/Track.js";
+import { Step } from "../models/Step.js";
 
 import authRoutes from "./auth.routes.js";
 import publicRoutes from "./public.routes.js";
@@ -16,6 +18,8 @@ import settingsRoutes from "./settings.routes.js";
 import themeRoutes from "./theme.routes.js";
 import { publicLeads, adminLeads } from "./leads.routes.js";
 import { publicBooking, adminBooking } from "./booking.routes.js";
+import { publicBootcamp, traineeAuth, meRoutes } from "./bootcamp.routes.js";
+import { adminReview } from "./reviewQueue.routes.js";
 import { dbReady } from "../config/db.js";
 
 const router = Router();
@@ -43,6 +47,9 @@ router.use("/auth", authRoutes);
 router.use("/public", publicRoutes);
 router.use("/leads", publicLeads);
 router.use("/public", publicBooking);
+router.use("/public", publicBootcamp);
+router.use("/trainee", traineeAuth);
+router.use("/me", meRoutes);
 
 router.use("/admin/settings", settingsRoutes);
 router.use("/admin/theme", themeRoutes);
@@ -82,11 +89,35 @@ router.use(
   })
 );
 
+router.use(
+  "/admin/tracks",
+  crudRouter({
+    Model: Track,
+    resource: "tracks",
+    populate: "cover",
+    transform: autoSlug("title", ["cover"]),
+  })
+);
+
+router.use(
+  "/admin/steps",
+  crudRouter({
+    Model: Step,
+    resource: "steps",
+    populate: "lesson",
+    filterable: ["track", "kind"],
+    sort: { track: 1, order: 1 },
+    transform: autoSlug("title", ["lesson"]),
+  })
+);
+
 router.use("/admin/faqs", crudRouter({ Model: Faq, resource: "faqs" }));
 
 router.use(
   "/admin/technologies",
   crudRouter({ Model: Technology, resource: "technologies", filterable: ["group"] })
 );
+
+router.use("/admin", adminReview);
 
 export default router;

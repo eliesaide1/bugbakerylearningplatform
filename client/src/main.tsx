@@ -4,6 +4,7 @@ import { BrowserRouter } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import App from "./App";
 import { RealtimeProvider } from "./realtime/RealtimeProvider";
+import { TraineeProvider } from "./state/TraineeContext";
 import "./index.css";
 
 const queryClient = new QueryClient({
@@ -21,11 +22,13 @@ if (!rootElement) throw new Error("Missing #root element");
 ReactDOM.createRoot(rootElement).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
-      <RealtimeProvider>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </RealtimeProvider>
+      <TraineeProvider>
+        <RealtimeProvider>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </RealtimeProvider>
+      </TraineeProvider>
     </QueryClientProvider>
   </React.StrictMode>
 );

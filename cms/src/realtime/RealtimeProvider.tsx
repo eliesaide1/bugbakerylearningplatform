@@ -78,6 +78,17 @@ export function RealtimeProvider({ children }: { children: ReactNode }) {
     socket.on("booking:deleted", bookings);
     socket.on("lead:deleted", () => queryClient.invalidateQueries({ queryKey: ["admin", "leads"] }));
 
+    // The review queue fills as trainees submit. Keeping the count live means
+    // you can leave this open and see work arrive rather than polling for it.
+    const submissions = () => {
+      queryClient.invalidateQueries({ queryKey: ["admin", "submissions"] });
+      queryClient.invalidateQueries({ queryKey: ["admin", "enrollments"] });
+    };
+    socket.on("submission:new", submissions);
+    socket.on("submission:reviewed", submissions);
+    socket.on("enrollment:new", submissions);
+    socket.on("track:completed", submissions);
+
     return () => {
       socket.removeAllListeners();
       socket.disconnect();

@@ -3,10 +3,11 @@ import jwt from "jsonwebtoken";
 import { env } from "./config/env.js";
 
 /**
- * Two rooms:
- *   "site" — every public visitor. Gets content:changed so the page repaints live.
- *   "cms"  — authenticated editors. Gets the same events plus presence, so two
- *            people editing at once see each other's saves immediately.
+ * Rooms:
+ *   "site"        — every public visitor. Gets content:changed so the page repaints live.
+ *   "cms"         — authenticated editors. Gets the same events plus presence, plus the
+ *                   review queue filling up as trainees submit work.
+ *   "trainee:<id>" — one signed-in trainee. Gets verdicts on their own submissions only.
  */
 let io = null;
 
@@ -31,6 +32,11 @@ export function initRealtime(httpServer) {
   io.on("connection", (socket) => {
     const wantsCms = socket.handshake.auth?.room === "cms" && socket.user;
     socket.join("site");
+
+    // A signed-in trainee gets a room of their own, so a review landing on
+    // their work reaches them and nobody else.
+    if (socket.user?.id) socket.join(`trainee:${socket.user.id}`);
+
     if (wantsCms) {
       socket.join("cms");
       socket.emit("cms:welcome", { user: socket.user });
@@ -87,4 +93,12 @@ export function emitTo(room, event, payload) {
 
 export function getIo() {
   return io;
+}
+
+/** Hang up every socket so a shutdown is not held open by idle browsers. */
+export function closeRealtime() {
+  if (!io) return;
+  io.disconnectSockets(true);
+  io.close();
+  io = null;
 }

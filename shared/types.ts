@@ -18,6 +18,7 @@ export type SectionType =
   | "cta"
   | "callout"
   | "programs"
+  | "bootcamp"
   | "faq"
   | "builder";
 
@@ -29,7 +30,7 @@ export type LessonSource = "upload" | "youtube" | "vimeo" | "url";
 
 export type LeadStatus = "new" | "contacted" | "enrolled" | "closed";
 
-export type UserRole = "admin" | "editor";
+export type UserRole = "admin" | "editor" | "trainee";
 
 export interface Media {
   id: string;
@@ -370,4 +371,270 @@ export interface ApiErrorBody {
 export interface OkResponse {
   ok: boolean;
   id?: string;
+}
+
+/* ---------------- bootcamp ---------------- */
+
+/** What a trainee does at one point in a track. */
+export type StepKind = "watch" | "read" | "task" | "bug" | "push" | "quiz";
+
+export type CheckKind = "contains" | "not-contains" | "regex";
+
+/**
+ * A deterministic pass/fail rule the server runs against a submission before
+ * any AI sees it. Instant, free, and it cannot hallucinate — which is why the
+ * hard requirements of a step belong here rather than in the rubric.
+ */
+export interface StepCheck {
+  _id?: string;
+  kind: CheckKind;
+  /** The literal string, or the regex source when `kind` is "regex". */
+  value: string;
+  /** Shown to the trainee when this check fails. */
+  message?: string;
+  caseSensitive?: boolean;
+  /** Which part of the submission to test. */
+  field?: "code" | "notes" | "repoUrl" | "commitUrl" | "any";
+}
+
+/** The planted defect a "bug" step asks the trainee to fix. */
+export interface BugScenario {
+  language?: string;
+  filename?: string;
+  /** The broken source the trainee is handed. */
+  code?: string;
+  /** What the user of the app sees going wrong. */
+  symptom?: string;
+  stackTrace?: string;
+  hints: string[];
+  /** Never sent to the public API — it is the answer key. */
+  rootCause?: string;
+  /** Plain-language conditions a correct fix satisfies, fed to the reviewer. */
+  acceptance: string[];
+}
+
+export interface PushRequirement {
+  branch?: string;
+  commitMessage?: string;
+  requireRepoUrl?: boolean;
+  requireCommitUrl?: boolean;
+}
+
+export interface QuizQuestion {
+  _id?: string;
+  prompt: string;
+  /** Answer key. Stripped from the public payload. */
+  expected?: string;
+}
+
+export interface Step {
+  id: string;
+  track: string;
+  kind: StepKind;
+  title: string;
+  slug: string;
+  summary?: string;
+  /** The full instructions, paragraphs separated by blank lines. */
+  brief?: string;
+  estimateMinutes?: number;
+  points: number;
+  /** Which week of the track this belongs to. 1-based. */
+  week: number;
+
+  /** watch: an existing lesson, or a link of its own. */
+  lesson?: Ref<Lesson>;
+  videoUrl?: string;
+
+  /** task: what the trainee hands back. */
+  deliverables: string[];
+  starterRepo?: string;
+
+  bug?: BugScenario;
+  push?: PushRequirement;
+  quiz: QuizQuestion[];
+
+  checks: StepCheck[];
+  /** Free text telling the AI reviewer what a good answer looks like. */
+  rubric?: string;
+  /** Steps like "watch" finish with a button rather than a submission. */
+  requiresSubmission: boolean;
+  /** A milestone always goes to a human, whatever the checks and AI said. */
+  milestone: boolean;
+  /** Trainees who passed this step may review other people's attempts at it. */
+  peerReviewable: boolean;
+  order: number;
+  visible: boolean;
+}
+
+/** A step as the public API serves it: answer keys removed. */
+export interface PublicStep extends Omit<Step, "bug" | "quiz" | "checks" | "rubric"> {
+  bug?: Omit<BugScenario, "rootCause">;
+  quiz: Array<Omit<QuizQuestion, "expected">>;
+}
+
+export type TrackGate = "sequential" | "open";
+
+export interface TrackProtection {
+  blockCopy: boolean;
+  blockPaste: boolean;
+  deterScreenshots: boolean;
+}
+
+export interface Track {
+  id: string;
+  title: string;
+  slug: string;
+  stack?: string;
+  summary?: string;
+  level?: string;
+  weeks?: number;
+  outcomes: string[];
+  /** Names matching the Technology list, for the track cards. */
+  technologies: string[];
+  cover?: Ref<Media>;
+  /** Optional link back to the marketing program this track teaches. */
+  program?: Ref<Program>;
+  /** "sequential" locks each step until the one before it passes. */
+  gate: TrackGate;
+  /** Deterrents against lifting the exercise into a chatbot and back. */
+  protect: TrackProtection;
+  order: number;
+  visible: boolean;
+  steps?: PublicStep[];
+  stepCount?: number;
+  totalMinutes?: number;
+}
+
+export type SubmissionStatus = "pending" | "passed" | "changes-requested" | "failed";
+
+export interface CheckResult {
+  kind: CheckKind;
+  value: string;
+  passed: boolean;
+  message?: string;
+}
+
+export interface ReviewIssue {
+  title: string;
+  detail?: string;
+  severity?: "blocker" | "major" | "minor";
+}
+
+/** What the AI reviewer returns, normalised across providers. */
+export interface AiReview {
+  provider: string;
+  model?: string;
+  verdict: "pass" | "revise" | "fail";
+  score?: number;
+  /** 0-1. Low confidence is the main reason a submission reaches a person. */
+  confidence?: number;
+  summary: string;
+  issues: ReviewIssue[];
+  hints: string[];
+  /** Set when the provider was unreachable — the submission still saves. */
+  error?: string;
+  at?: string;
+}
+
+export interface SubmissionPayload {
+  code?: string;
+  notes?: string;
+  repoUrl?: string;
+  commitUrl?: string;
+  answers?: string[];
+}
+
+/** Why a submission was routed to a person rather than settled automatically. */
+export type Escalation =
+  | "low-confidence"
+  | "repeat-failure"
+  | "milestone"
+  | "requested"
+  | "audit"
+  | "peer-split"
+  | "integrity";
+
+/** One trainee reviewing another's attempt at a step they have already passed. */
+export interface PeerReview {
+  _id?: string;
+  reviewer: string;
+  reviewerName?: string;
+  verdict: "pass" | "revise";
+  note: string;
+  at: string;
+}
+
+/** How far the automatic review has got. The workspace waits on "reviewing". */
+export type ReviewState = "skipped" | "reviewing" | "done" | "timeout";
+
+/**
+ * What the browser observed while the answer was being written. Blocking a
+ * paste is a speed bump; counting the attempts is the part that survives.
+ */
+export interface Integrity {
+  pasteAttempts: number;
+  pastedCharacters: number;
+  copyAttempts: number;
+  awayEvents: number;
+  typedCharacters: number;
+  durationMs: number;
+}
+
+export interface Submission {
+  id: string;
+  trainee: string;
+  traineeInfo?: { id: string; name: string; email: string };
+  track: string;
+  step: string;
+  stepInfo?: { id: string; title: string; kind: StepKind };
+  attempt: number;
+  payload: SubmissionPayload;
+  checks: CheckResult[];
+  review?: AiReview | null;
+  reviewState: ReviewState;
+  peerReviews: PeerReview[];
+  integrity?: Integrity;
+  status: SubmissionStatus;
+  /** What the review queue filters on. */
+  needsHuman: boolean;
+  escalation?: Escalation;
+  humanRequested?: boolean;
+  mentor?: { name?: string; note?: string; at?: string };
+  createdAt: string;
+}
+
+export type EnrollmentStatus = "active" | "completed" | "paused";
+
+export interface Enrollment {
+  id: string;
+  trainee: string;
+  traineeInfo?: { id: string; name: string; email: string };
+  track: string;
+  trackInfo?: { id: string; title: string; slug: string };
+  status: EnrollmentStatus;
+  /** Ids of the steps that have been passed. */
+  completed: string[];
+  points: number;
+  startedAt: string;
+  completedAt?: string;
+  lastActivityAt?: string;
+}
+
+/** Everything the learning workspace needs for one track, in one request. */
+export interface WorkspacePayload {
+  track: Track;
+  steps: PublicStep[];
+  enrollment: Enrollment | null;
+  /** Latest submission per step id. */
+  submissions: Record<string, Submission>;
+  /** Step ids the trainee may open right now. */
+  unlocked: string[];
+}
+
+export interface AiStatus {
+  provider: string;
+  model?: string;
+  configured: boolean;
+  /** Human-readable note about what to set to enable it. */
+  note?: string;
 }

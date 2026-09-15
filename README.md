@@ -35,6 +35,7 @@ npm run dev                            # starts all three
 Then open:
 
 - the site — <http://localhost:5173>
+- the bootcamp — <http://localhost:5173/bootcamp>
 - the CMS — <http://localhost:5174>
 
 The seeded account is `admin@bugbakery.local` / `admin1234`. Change it from the CMS after your
@@ -173,3 +174,144 @@ Serve the two `dist` folders as static sites. Set on the server: `MONGO_URI`, `J
 - The server is plain JavaScript; both frontends are TypeScript.
 - If MongoDB is unreachable the API still starts, retries every 5s, and returns 503 on data routes
   rather than hanging.
+
+
+## The bootcamp
+
+A **track** is what a trainee enrols in — the seeded MERN one runs **twelve
+weeks**, and the workspace groups its 23 steps by week so it reads as a schedule
+rather than a list. The **steps** inside it are what they actually do, and they
+repeat one loop:
+
+**Watch** an idea → **build** a piece → **fix a bug** someone left in code like
+the piece you just built → **ship it**, and submit the commit.
+
+The bug steps are the point. Almost nobody at work starts from a blank file, and
+almost everybody starts from someone else's mistake — so each one hands over
+broken code, the symptom a user reported, and hints the trainee opens one at a
+time. The root cause is stored with the step but never sent to the browser.
+
+Author all of it under **Bootcamp tracks** in the CMS. It is marketed on the
+home page by a `bootcamp` section, which you can move, retitle or hide like any
+other band.
+
+### What a trainee waits for
+
+Deterministic checks run **in front of them** — the response comes back in
+milliseconds, so nobody waits to be told they forgot `express.json()`.
+
+The written review runs *after* the response has gone out. The workspace shows
+"reading your answer" and the verdict arrives on their socket, usually within
+seconds. `REVIEW_WAIT_MS` (default 60s) is the ceiling: past it, the wait stops
+and a person takes over. A provider that dies mid-review, or a server restarted
+mid-review, both end the same way — the submission is kept and routed to the
+queue, never lost and never left spinning.
+
+### How work gets reviewed without you reading all of it
+
+Submissions climb a ladder, and each rung filters. You only see what is left.
+
+| Rung | What it is | Cost |
+| --- | --- | --- |
+| 0 | Steps authored so nothing subjective is left to judge | free, and permanent |
+| 1 | Deterministic checks — must contain / must not contain / regex | instant, free |
+| 2 | An AI reviewer that writes real feedback and reports its own confidence | seconds |
+| 3 | Routing: only five things reach a person | — |
+| 4 | Peer review by trainees, then graduates as mentors | not your time |
+
+**Rung 0 is the one that matters most, and it is a curriculum decision rather
+than a setting.** "Fix this so the acceptance criteria hold" is objectively
+gradeable forever; "build something nice" needs a human every single time. Author
+toward the first and the queue stays small.
+
+Exactly five things put a submission in front of a person — each one a case
+where a human genuinely adds what a model does not:
+
+- the reviewer's confidence fell below `REVIEW_CONFIDENCE_FLOOR`
+- the trainee has failed the same step `REVIEW_REPEAT_FAILURES` times — they are
+  stuck, and the feedback clearly is not landing
+- the step is marked a **milestone**. This is the dial on your workload: gate one
+  step in six, not six in six
+- the trainee ticked "I would like a person to look at this", which is on every
+  submission and always honoured
+- a random `REVIEW_AUDIT_RATE` share of passes, spot-checked so a drifting
+  reviewer shows up here rather than in a graduate's first job. An audit never
+  blocks the trainee — they have already passed
+
+Everything else settles on its own. What is left arrives in **Review queue**,
+blocked trainees first, with the reason it was escalated attached.
+
+### Peer review
+
+A trainee who has passed a step can review other people's attempts at it. Two
+reviews that agree settle a submission; if they disagree, it comes to you.
+
+It lives in the workspace as a second tab beside their own work — no separate
+page to remember, and the count of what is waiting is on the tab.
+
+This is not only a way to spend less of your time. Reading broken code that is
+not yours is one of the most valuable things a junior can practise, and it is
+the thing nobody practises.
+
+### Turning the reviewer on
+
+Set `AI_PROVIDER` in `server/.env`. All three paths use the same prompt, the same
+JSON contract and the same ladder — the provider is the swappable part.
+
+```bash
+# Free, local, nothing leaves your machine
+brew install ollama && ollama serve
+ollama pull qwen2.5-coder:7b
+AI_PROVIDER=ollama
+
+# Best quality
+AI_PROVIDER=claude
+ANTHROPIC_API_KEY=sk-ant-…
+
+# Anything speaking /chat/completions — Groq and OpenRouter have free tiers
+AI_PROVIDER=openai-compatible
+AI_BASE_URL=https://api.groq.com/openai/v1
+AI_API_KEY=…
+AI_MODEL=…
+```
+
+With `AI_PROVIDER=off`, checks still run and any step with a rubric goes to the
+queue. **Review queue → Test it** tells you whether the provider actually
+answers, so a broken key surfaces there rather than mid-cohort.
+
+The reviewer is never the authority. Your verdict in the queue overrides it, and
+a provider that is down routes work to a person instead of losing it.
+
+
+### Keeping exercises off a chatbot
+
+Each track has three switches, under **Bootcamp tracks → the track**:
+
+- refuse selection and copying of the brief and the broken code
+- refuse pasting into the answer fields
+- blur the exercise when the tab loses focus, and refuse printing
+
+**Be clear-eyed about what these are.** They are deterrents. Anyone can open
+developer tools, disable JavaScript, read the network response, or point a phone
+at the screen — no web page can prevent that, and a page that claims to is
+lying. What they do reliably is make the lazy path inconvenient, which is most
+of the actual traffic.
+
+The half that survives a determined trainee is the **counting**. A blocked paste
+is still an observed paste, and every submission carries what the browser saw:
+paste attempts and their size, copies, times the tab was left, characters
+actually typed, and how long the step took. When that crosses
+`REVIEW_PASTE_ATTEMPTS` or `REVIEW_PASTED_CHARACTERS`, the submission is flagged
+**Looks pasted** and goes to a person — it is never marked wrong on that alone,
+because it is circumstantial and a trainee pasting their own code from their
+editor looks identical.
+
+Blocking paste has a real cost: a trainee who wrote their answer in VS Code has
+to retype it. That is the trade, and it is why it is a per-track switch rather
+than a global rule.
+
+If you want something that actually holds up, it is not in the browser: ask the
+trainee to explain their fix in their own words (the bug steps already require
+this, and the rubrics mark down a correct fix with a wrong explanation), and use
+the milestone steps for a short live conversation. Someone who cannot explain
+the fix did not write it, and that is a far better signal than any keystroke.

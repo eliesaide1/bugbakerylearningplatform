@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { io, type Socket } from "socket.io-client";
-import { API_URL } from "../api/client";
+import { API_URL, tokenStore } from "../api/client";
 import type { ContentChange } from "@shared/types";
 
 interface RealtimeValue {
@@ -28,6 +28,9 @@ export function RealtimeProvider({ children }: { children: ReactNode }) {
       transports: ["websocket", "polling"],
       reconnectionDelay: 800,
       reconnectionDelayMax: 6000,
+      // A signed-in trainee joins a room of their own, so a verdict on their
+      // work reaches them and nobody else's browser hears about it.
+      auth: { token: tokenStore.get() ?? undefined },
     });
 
     socket.on("connect", () => setConnected(true));
@@ -40,6 +43,10 @@ export function RealtimeProvider({ children }: { children: ReactNode }) {
       queryClient.invalidateQueries({ queryKey: ["site"] });
       queryClient.invalidateQueries({ queryKey: ["program"] });
       queryClient.invalidateQueries({ queryKey: ["lesson"] });
+    });
+
+    socket.on("review:updated", () => {
+      queryClient.invalidateQueries({ queryKey: ["me"] });
     });
 
     return () => {

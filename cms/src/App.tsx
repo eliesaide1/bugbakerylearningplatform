@@ -9,6 +9,10 @@ import SectionEditor from "./pages/SectionEditor";
 import ProgramsPage from "./pages/ProgramsPage";
 import ProgramEditor from "./pages/ProgramEditor";
 import LessonsPage from "./pages/LessonsPage";
+import TracksPage from "./pages/TracksPage";
+import TrackEditor from "./pages/TrackEditor";
+import ReviewQueuePage from "./pages/ReviewQueuePage";
+import TraineesPage from "./pages/TraineesPage";
 import MediaPage from "./pages/MediaPage";
 import FaqsPage from "./pages/FaqsPage";
 import TechnologiesPage from "./pages/TechnologiesPage";
@@ -39,6 +43,10 @@ export default function App() {
         <Route path="/programs" element={<ProgramsPage />} />
         <Route path="/programs/:id" element={<ProgramEditor />} />
         <Route path="/lessons" element={<LessonsPage />} />
+        <Route path="/tracks" element={<TracksPage />} />
+        <Route path="/tracks/:id" element={<TrackEditor />} />
+        <Route path="/review" element={<ReviewQueuePage />} />
+        <Route path="/trainees" element={<TraineesPage />} />
         <Route path="/media" element={<MediaPage />} />
         <Route path="/faqs" element={<FaqsPage />} />
         <Route path="/technologies" element={<TechnologiesPage />} />

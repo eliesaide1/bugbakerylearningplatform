@@ -16,6 +16,9 @@ import { Faq } from "../models/Faq.js";
 import { Technology } from "../models/Technology.js";
 import { SiteSettings } from "../models/SiteSettings.js";
 import { Theme } from "../models/Theme.js";
+import { Track } from "../models/Track.js";
+import { Step } from "../models/Step.js";
+import { tracks as bootcampTracks } from "./bootcamp.js";
 
 const programs = [
   {
@@ -536,6 +539,17 @@ const sections = [
     body: "Want React with .NET, or React Native with SQL Server, or only the DevOps half? Any combination works. Use the builder at the top and tell me what you need.",
   },
   {
+    slug: "bootcamp",
+    type: "bootcamp",
+    theme: "paper",
+    navLabel: "Bootcamp",
+    eyebrow: "Twelve weeks",
+    title: "Or learn it the way the job actually happens",
+    lede:
+      "A course you watch teaches you the ideas. The bootcamp puts you in the situations: build the piece, then fix the bug someone left in it, then ship it — with your code read every week, not just at the end.",
+    ctaLabel: "See how it works",
+  },
+  {
     slug: "access",
     type: "steps",
     theme: "paper",
@@ -762,6 +776,8 @@ async function run() {
     Technology.deleteMany({}),
     SiteSettings.deleteMany({}),
     Theme.deleteMany({}),
+    Track.deleteMany({}),
+    Step.deleteMany({}),
   ]);
 
   await SiteSettings.create({
@@ -806,6 +822,23 @@ async function run() {
     );
   }
 
+  // Bootcamp tracks and their steps. Enrolments and submissions are trainee
+  // data, so they survive a reseed the same way leads and media do.
+  for (const [order, { steps = [], ...track }] of bootcampTracks.entries()) {
+    const created = await Track.create({ ...track, order });
+    // Authored roughly by topic; a trainee walks them by week, so the stored
+    // order follows the schedule rather than the order they were written in.
+    const scheduled = [...steps].sort((a, b) => (a.week ?? 1) - (b.week ?? 1));
+    await Step.insertMany(
+      scheduled.map((step, index) => ({
+        ...step,
+        track: created._id,
+        slug: slugify(step.title, { lower: true, strict: true }),
+        order: index,
+      }))
+    );
+  }
+
   const existingAdmin = await User.findOne({ email: env.admin.email.toLowerCase() });
   if (existingAdmin) {
     console.log(`[seed] admin already exists: ${existingAdmin.email}`);
@@ -819,9 +852,11 @@ async function run() {
     console.log(`[seed] admin created: ${env.admin.email} / ${env.admin.password}`);
   }
 
+  const stepTotal = bootcampTracks.reduce((n, t) => n + (t.steps?.length ?? 0), 0);
   console.log(
     `[seed] ${programs.length} programs, ${sections.length} sections, ${faqs.length} faqs, ${technologies.length} technologies`
   );
+  console.log(`[seed] ${bootcampTracks.length} bootcamp track(s), ${stepTotal} steps`);
   await mongoose.disconnect();
   console.log("[seed] done");
 }
