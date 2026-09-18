@@ -123,6 +123,9 @@ export function Curriculum({
                     </span>
                   </span>
 
+                  {/* Deliberately no bar here. Anything part-filled beside a
+                      lecture count reads as "how much you have watched", which
+                      is a promise this page cannot keep — nobody has started. */}
                   <span className="font-mono text-[0.74rem] whitespace-nowrap tabular-nums text-muted">
                     {[
                       own.length
@@ -153,6 +156,7 @@ export function Curriculum({
                           index={position.get(lesson.id) ?? 0}
                           programSlug={programSlug ?? ""}
                           active={lesson.slug === activeSlug}
+                          compact
                         />
                       ))}
                     </div>

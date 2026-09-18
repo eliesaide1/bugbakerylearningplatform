@@ -17,10 +17,12 @@ const BOOTCAMP = "/bootcamp";
 export function Header({ settings, sections = [] }: HeaderProps) {
   const [open, setOpen] = useState(false);
   const { connected } = useRealtime();
-  const { trainee } = useTrainee();
-  const { pathname } = useLocation();
+  const { trainee, signOut } = useTrainee();
+  const { pathname, search } = useLocation();
   const onHome = pathname === "/";
   const onBootcamp = pathname.startsWith(BOOTCAMP);
+  /** Where to send them back to once they have signed in. */
+  const here = `${pathname}${search}`;
 
   const links = useMemo(
     () =>
@@ -101,19 +103,48 @@ export function Header({ settings, sections = [] }: HeaderProps) {
             </a>
           ))}
 
-          {trainee ? (
-            <Link
-              to={BOOTCAMP}
-              title={`Signed in as ${trainee.name}`}
-              className="whitespace-nowrap border-l border-line pl-5 font-mono text-[0.82rem] text-muted no-underline hover:text-primary"
-            >
-              {trainee.name.split(" ")[0]}
-            </Link>
-          ) : null}
-
-          <a href={anchor("enroll")} className={buttonClasses("solid", "sm", "ml-1 whitespace-nowrap")}>
+          <a href={anchor("enroll")} className={linkClass(isActive("enroll"))}>
             Enroll
+            {underline(isActive("enroll"))}
           </a>
+
+          {/* Account controls sit apart from the page nav, the way every
+              course site puts them: one way in, one way out. */}
+          <span className="flex items-center gap-3 border-l border-line pl-5">
+            {trainee ? (
+              <>
+                <Link
+                  to={BOOTCAMP}
+                  title={`Signed in as ${trainee.name}`}
+                  className="whitespace-nowrap font-mono text-[0.82rem] text-muted no-underline hover:text-primary"
+                >
+                  {trainee.name.split(" ")[0]}
+                </Link>
+                <button
+                  type="button"
+                  onClick={signOut}
+                  className="cursor-pointer whitespace-nowrap text-[0.9rem] text-ink-2 transition-colors hover:text-primary"
+                >
+                  Sign out
+                </button>
+              </>
+            ) : (
+              <>
+                <Link
+                  to={`/signin?next=${encodeURIComponent(here)}`}
+                  className="whitespace-nowrap text-[0.9rem] text-ink-2 no-underline transition-colors hover:text-primary"
+                >
+                  Log in
+                </Link>
+                <Link
+                  to={`/join?next=${encodeURIComponent(here)}`}
+                  className={buttonClasses("solid", "sm", "whitespace-nowrap")}
+                >
+                  Sign up
+                </Link>
+              </>
+            )}
+          </span>
         </nav>
 
         <button
@@ -158,14 +189,43 @@ export function Header({ settings, sections = [] }: HeaderProps) {
               </a>
             ))}
             {trainee ? (
-              <Link
-                to={BOOTCAMP}
-                onClick={() => setOpen(false)}
-                className="py-3 pl-3.5 font-mono text-[0.82rem] text-muted no-underline"
-              >
-                Signed in as {trainee.name}
-              </Link>
-            ) : null}
+              <>
+                <Link
+                  to={BOOTCAMP}
+                  onClick={() => setOpen(false)}
+                  className="border-b border-line py-3 pl-3.5 font-mono text-[0.82rem] text-muted no-underline"
+                >
+                  Signed in as {trainee.name}
+                </Link>
+                <button
+                  type="button"
+                  onClick={() => {
+                    signOut();
+                    setOpen(false);
+                  }}
+                  className="cursor-pointer py-3 pl-3.5 text-left text-[0.95rem] text-ink-2"
+                >
+                  Sign out
+                </button>
+              </>
+            ) : (
+              <div className="flex flex-wrap items-center gap-3 px-3.5 py-4">
+                <Link
+                  to={`/signin?next=${encodeURIComponent(here)}`}
+                  onClick={() => setOpen(false)}
+                  className={buttonClasses("quiet", "sm", "no-underline")}
+                >
+                  Log in
+                </Link>
+                <Link
+                  to={`/join?next=${encodeURIComponent(here)}`}
+                  onClick={() => setOpen(false)}
+                  className={buttonClasses("solid", "sm", "no-underline")}
+                >
+                  Sign up
+                </Link>
+              </div>
+            )}
           </Container>
         </nav>
       ) : null}

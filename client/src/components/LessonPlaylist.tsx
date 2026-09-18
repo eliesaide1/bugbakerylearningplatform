@@ -1,4 +1,4 @@
-import { LockGlyph } from "@shared/ui";
+import { LockGlyph, PlayGlyph } from "@shared/ui";
 import { Link } from "react-router-dom";
 import { mediaUrl } from "../api/client";
 import { hasVideo } from "@shared/media";
@@ -14,14 +14,29 @@ export function LessonRow({
   index,
   programSlug,
   active = false,
+  compact = false,
 }: {
   lesson: Lesson;
   index: number;
   programSlug: string;
   active?: boolean;
+  /** Syllabus listing: one line per lecture, no artwork. */
+  compact?: boolean;
 }) {
   const free = lesson.isFree && !lesson.locked;
   const watchable = free && hasVideo(lesson);
+
+  if (compact) {
+    return (
+      <CompactRow
+        lesson={lesson}
+        index={index}
+        programSlug={programSlug}
+        active={active}
+        watchable={watchable}
+      />
+    );
+  }
 
   const body = (
     <>
@@ -69,6 +84,90 @@ export function LessonRow({
     active
       ? "border-l-primary bg-primary-soft"
       : "border-l-transparent hover:border-l-line-strong hover:bg-paper"
+  }`;
+
+  if (watchable) {
+    return (
+      <Link to={`/watch/${programSlug}/${lesson.slug}`} className={`${shell} no-underline`}>
+        {body}
+      </Link>
+    );
+  }
+
+  return <div className={`${shell} cursor-default`}>{body}</div>;
+}
+
+/**
+ * One lecture on a single line: what it is, what it is called, how long it
+ * runs. A course this size is read as a list rather than browsed as artwork,
+ * so the run times line up in their own column and the eye can scan them.
+ */
+function CompactRow({
+  lesson,
+  index,
+  programSlug,
+  active,
+  watchable,
+}: {
+  lesson: Lesson;
+  index: number;
+  programSlug: string;
+  active: boolean;
+  watchable: boolean;
+}) {
+  const body = (
+    <>
+      <span
+        aria-hidden="true"
+        className={`mt-px grid size-6 flex-none place-items-center rounded-[5px] border transition-colors ${
+          active
+            ? "border-primary bg-primary text-white"
+            : watchable
+              ? "border-secondary bg-secondary-soft text-secondary-deep"
+              : "border-line-strong bg-paper text-muted group-hover:border-primary group-hover:text-primary"
+        }`}
+      >
+        {/* The glyph says what the row is — a video. Whether it is watchable
+            yet is carried by the colour and the preview chip, because a column
+            of padlocks reads as a wall rather than a syllabus. */}
+        <PlayGlyph className="size-3" />
+      </span>
+
+      <span className="hidden font-mono text-[0.72rem] tabular-nums text-muted sm:block">
+        {String(index + 1).padStart(2, "0")}
+      </span>
+
+      <span className="min-w-0">
+        <span
+          className={`block truncate text-[0.93rem] leading-snug ${
+            active ? "font-semibold text-primary" : "text-ink-2 group-hover:text-primary"
+          }`}
+          title={lesson.title}
+        >
+          {lesson.title}
+        </span>
+      </span>
+
+      {watchable ? (
+        <span className="hidden rounded-full bg-secondary-soft px-2 py-0.5 font-mono text-[0.66rem] tracking-wide text-secondary-deep uppercase sm:block">
+          preview
+        </span>
+      ) : null}
+
+      <span
+        className={`text-right font-mono text-[0.78rem] tabular-nums ${
+          active ? "text-primary" : "text-muted"
+        }`}
+      >
+        {lesson.duration}
+      </span>
+    </>
+  );
+
+  const shell = `group grid w-full grid-cols-[auto_1fr_auto] items-center gap-x-3 border-l-2 py-2 pr-4 pl-3 text-left transition-colors sm:grid-cols-[auto_auto_1fr_auto_auto] sm:gap-x-3.5 ${
+    active
+      ? "border-l-primary bg-primary-soft"
+      : "border-l-transparent hover:border-l-primary hover:bg-paper"
   }`;
 
   if (watchable) {
