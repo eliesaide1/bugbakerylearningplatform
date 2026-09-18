@@ -7,6 +7,7 @@ import BootcampPage from "./pages/BootcampPage";
 import TrackPage from "./pages/TrackPage";
 import WorkspacePage from "./pages/WorkspacePage";
 import JoinPage from "./pages/JoinPage";
+import AccountPage from "./pages/AccountPage";
 import { PageState } from "./components/PageState";
 import { LiveUpdateToast } from "./realtime/RealtimeProvider";
 import { useThemeSync } from "./hooks/useThemeSync";
@@ -27,6 +28,7 @@ export default function App() {
         <Route path="/learn/:slug" element={<WorkspacePage />} />
         <Route path="/join" element={<JoinPage mode="join" />} />
         <Route path="/signin" element={<JoinPage mode="signin" />} />
+        <Route path="/account" element={<AccountPage />} />
         <Route path="*" element={<PageState kind="empty" message="That page does not exist." />} />
       </Routes>
       <LiveUpdateToast />

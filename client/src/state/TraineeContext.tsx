@@ -17,6 +17,8 @@ interface TraineeValue {
   ready: boolean;
   signIn: (email: string, password: string) => Promise<void>;
   join: (name: string, email: string, password: string) => Promise<void>;
+  /** Rename yourself. The API returns a fresh token, since it carries the name. */
+  rename: (name: string) => Promise<void>;
   signOut: () => void;
 }
 
@@ -110,9 +112,16 @@ export function TraineeProvider({ children }: { children: ReactNode }) {
     [adopt]
   );
 
+  const rename = useCallback(
+    async (newName: string) => {
+      adopt(await api<AuthResponse>("/auth/me", { method: "PATCH", body: { name: newName } }));
+    },
+    [adopt]
+  );
+
   const value = useMemo(
-    () => ({ trainee, token, ready, signIn, join, signOut }),
-    [trainee, token, ready, signIn, join, signOut]
+    () => ({ trainee, token, ready, signIn, join, rename, signOut }),
+    [trainee, token, ready, signIn, join, rename, signOut]
   );
 
   return <TraineeContext.Provider value={value}>{children}</TraineeContext.Provider>;

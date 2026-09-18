@@ -1,12 +1,15 @@
 import { Router } from "express";
 import { SiteSettings } from "../models/SiteSettings.js";
-import { requireAuth } from "../middleware/auth.js";
+import { requireAuth, requireRole } from "../middleware/auth.js";
 import { asyncHandler, requireDb } from "../middleware/error.js";
 import { emitChange } from "../realtime.js";
 import { normalizeRefs } from "../lib/refs.js";
 
 const router = Router();
-router.use(requireDb, requireAuth);
+// Content is staff-only. Trainees hold a valid token too, so checking
+// that one exists is not enough: without the role check, anyone who
+// signed up could read the bug answer keys and rewrite the site.
+router.use(requireDb, requireAuth, requireRole("admin", "editor"));
 
 router.get(
   "/",

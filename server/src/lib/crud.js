@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { asyncHandler, httpError, requireDb } from "../middleware/error.js";
-import { requireAuth } from "../middleware/auth.js";
+import { requireAuth, requireRole } from "../middleware/auth.js";
 import { emitChange } from "../realtime.js";
 
 /**
@@ -17,7 +17,10 @@ export function crudRouter({
   transform = (body) => body,
 }) {
   const router = Router();
-  router.use(requireDb, requireAuth);
+  // Content is staff-only. Trainees hold a valid token too, so checking
+  // that one exists is not enough: without the role check, anyone who
+  // signed up could read the bug answer keys and rewrite the site.
+  router.use(requireDb, requireAuth, requireRole("admin", "editor"));
 
   const load = (id) => {
     const q = Model.findById(id);

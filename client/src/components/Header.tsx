@@ -114,8 +114,8 @@ export function Header({ settings, sections = [] }: HeaderProps) {
             {trainee ? (
               <>
                 <Link
-                  to={BOOTCAMP}
-                  title={`Signed in as ${trainee.name}`}
+                  to="/account"
+                  title={`Signed in as ${trainee.name} — your account`}
                   className="whitespace-nowrap font-mono text-[0.82rem] text-muted no-underline hover:text-primary"
                 >
                   {trainee.name.split(" ")[0]}
@@ -191,11 +191,11 @@ export function Header({ settings, sections = [] }: HeaderProps) {
             {trainee ? (
               <>
                 <Link
-                  to={BOOTCAMP}
+                  to="/account"
                   onClick={() => setOpen(false)}
                   className="border-b border-line py-3 pl-3.5 font-mono text-[0.82rem] text-muted no-underline"
                 >
-                  Signed in as {trainee.name}
+                  {trainee.name} — your account
                 </Link>
                 <button
                   type="button"

@@ -40,6 +40,28 @@ router.get("/me", requireDb, requireAuth, (req, res) => {
   res.json({ user: req.user.toJSON() });
 });
 
+/**
+ * Edit your own profile. Name only: an email is the account's identity and the
+ * one factor in signing in, so changing it needs a confirmation round-trip
+ * rather than a text field, and the role is never the account holder's to set.
+ */
+router.patch(
+  "/me",
+  requireDb,
+  requireAuth,
+  asyncHandler(async (req, res) => {
+    const { name } = z
+      .object({ name: z.string().trim().min(2, "Tell us your name.").max(80) })
+      .parse(req.body);
+
+    req.user.name = name;
+    await req.user.save();
+    // The name is carried in the token, so a stale one would keep showing the
+    // old value in the header until it expired. Hand back a fresh one.
+    res.json({ token: signToken(req.user), user: req.user.toJSON() });
+  })
+);
+
 router.post(
   "/password",
   requireDb,

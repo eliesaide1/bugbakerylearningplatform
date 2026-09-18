@@ -3,7 +3,7 @@ import rateLimit from "express-rate-limit";
 import { z } from "zod";
 import { Availability } from "../models/Availability.js";
 import { Booking } from "../models/Booking.js";
-import { requireAuth } from "../middleware/auth.js";
+import { requireAuth, requireRole } from "../middleware/auth.js";
 import { asyncHandler, httpError, requireDb } from "../middleware/error.js";
 import { openSlots } from "../lib/slots.js";
 import { emitChange, emitTo } from "../realtime.js";
@@ -93,7 +93,10 @@ publicBooking.post(
 
 /* ------------------------------ admin ------------------------------ */
 
-adminBooking.use(requireDb, requireAuth);
+// Content is staff-only. Trainees hold a valid token too, so checking
+// that one exists is not enough: without the role check, anyone who
+// signed up could read the bug answer keys and rewrite the site.
+adminBooking.use(requireDb, requireAuth, requireRole("admin", "editor"));
 
 adminBooking.get(
   "/availability",
