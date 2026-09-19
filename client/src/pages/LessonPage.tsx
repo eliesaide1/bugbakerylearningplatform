@@ -5,11 +5,12 @@ import { Footer } from "../components/Footer";
 import { PageState } from "../components/PageState";
 import { VideoPlayer } from "../components/VideoPlayer";
 import { Reveal } from "../components/Reveal";
-import { LessonRow } from "../components/LessonPlaylist";
-import { ButtonAnchor, ButtonLink, Container, Eyebrow } from "@shared/ui";
+import { LessonRail } from "../components/LessonRail";
+import { PracticePanel } from "../components/PracticePanel";
+import { ButtonAnchor, ButtonLink, Container, Eyebrow, Prose } from "@shared/ui";
 import { useTrainee } from "../state/TraineeContext";
 import type { Section, SiteSettings } from "@shared/types";
-import { runtimeOf } from "@shared/duration";
+import { hasVideo } from "@shared/media";
 
 export default function LessonPage() {
   const { programSlug, lessonSlug } = useParams();
@@ -59,9 +60,14 @@ export default function LessonPage() {
 
           <div className="mt-6 grid items-start gap-8 lg:grid-cols-[1.55fr_0.85fr] lg:gap-10">
             <div className="min-w-0">
-              <Reveal>
-                <VideoPlayer lesson={lesson} />
-              </Reveal>
+              {/* A written lesson should not open with an empty video frame
+                  apologising for itself. The player appears only when there is
+                  something to play. */}
+              {hasVideo(lesson) ? (
+                <Reveal>
+                  <VideoPlayer lesson={lesson} />
+                </Reveal>
+              ) : null}
 
               <Reveal delay={70} className="mt-6">
                 <Eyebrow theme="primary">
@@ -71,11 +77,21 @@ export default function LessonPage() {
                 {lesson.duration ? (
                   <p className="mt-2 font-mono text-[0.82rem] tabular-nums text-muted">{lesson.duration}</p>
                 ) : null}
-                {lesson.description ? (
-                  <p className="mt-4 max-w-[62ch] text-step-1 leading-[1.5] text-ink-2">
-                    {lesson.description}
-                  </p>
+                {/* The picture before the prose: a diagram is the fastest way
+                    into a structural idea, and the text then fills it in. */}
+                {lesson.diagram ? (
+                  <img
+                    src={lesson.diagram}
+                    alt=""
+                    className="mt-6 w-full rounded-panel border border-line-strong"
+                    loading="lazy"
+                  />
                 ) : null}
+
+                {/* Written up rather than only spoken: a lesson should still
+                    be worth something to someone who reads faster than they
+                    watch, or who comes back for the detail. */}
+                <Prose text={lesson.description} className="mt-5 max-w-[70ch]" />
               </Reveal>
 
               {next ? (
@@ -93,43 +109,39 @@ export default function LessonPage() {
                 </Reveal>
               ) : null}
 
-              <Reveal
-                delay={140}
-                className="mt-8 max-w-[70ch] border-l-4 border-secondary bg-secondary-soft px-6 py-5"
-              >
-                <b className="font-display text-[1.1rem]">Want the rest of this program?</b>
-                <p className="mt-1.5 text-ink-2">
-                  The full curriculum, weekly live sessions and 1:1 hours come with enrolment.
-                </p>
-                <ButtonAnchor href="/#enroll" className="mt-4">
-                  Ask about enrolling
-                </ButtonAnchor>
-              </Reveal>
+              {lesson.practice?.checks?.length || lesson.practice?.questions?.length ? (
+                <Reveal delay={120} className="mt-8">
+                  <PracticePanel practice={lesson.practice} lessonId={lesson.id} />
+                </Reveal>
+              ) : null}
+
+              {/* Someone who has already paid should not be sold to on every lesson. */}
+              {program?.enrolled ? null : (
+                <Reveal
+                  delay={140}
+                  className="mt-8 max-w-[70ch] border-l-4 border-secondary bg-secondary-soft px-6 py-5"
+                >
+                  <b className="font-display text-[1.1rem]">Want the rest of this program?</b>
+                  <p className="mt-1.5 text-ink-2">
+                    The full curriculum, weekly live sessions and 1:1 hours come with enrolment.
+                  </p>
+                  <ButtonAnchor href="/#enroll" className="mt-4">
+                    Ask about enrolling
+                  </ButtonAnchor>
+                </Reveal>
+              )}
             </div>
 
             {lessons.length ? (
               <Reveal delay={70} className="lg:sticky lg:top-24">
-                <div className="overflow-hidden rounded-panel border border-line-strong bg-panel">
-                  <div className="border-b border-line px-4 py-3">
-                    <p className="font-display text-[1rem] font-extrabold">{lesson.program.title}</p>
-                    <p className="mt-0.5 font-mono text-[0.74rem] tabular-nums text-muted">
-                      {position >= 0 ? `${position + 1} / ${lessons.length}` : lessons.length} ·{" "}
-                      {runtimeOf(lessons)}
-                    </p>
-                  </div>
-
-                  <div className="max-h-[560px] divide-y divide-line overflow-y-auto">
-                    {lessons.map((item, index) => (
-                      <LessonRow
-                        key={item.id}
-                        lesson={item}
-                        index={index}
-                        programSlug={lesson.program.slug}
-                        active={item.slug === lesson.slug}
-                      />
-                    ))}
-                  </div>
-                </div>
+                <LessonRail
+                  lessons={lessons}
+                  modules={program?.modules}
+                  programSlug={lesson.program.slug}
+                  programTitle={lesson.program.title}
+                  activeSlug={lesson.slug}
+                  enrolled={program?.enrolled}
+                />
               </Reveal>
             ) : null}
           </div>

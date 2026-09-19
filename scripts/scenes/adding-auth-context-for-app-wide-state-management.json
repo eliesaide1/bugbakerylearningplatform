@@ -1,0 +1,28 @@
+{
+  "title": "Context: state that skips the tree",
+  "elements": [
+    { "type": "box", "at": 0.3, "in": 0.4, "x": 60, "y": 150, "w": 520, "h": 60,
+      "label": "Prop drilling", "sub": "every layer must carry it", "colour": "muted" },
+    { "type": "box", "at": 0.5, "in": 0.4, "x": 60, "y": 226, "w": 520, "h": 290, "label": "", "colour": "muted" },
+
+    { "type": "box", "at": 0.8, "in": 0.35, "x": 90, "y": 250, "w": 460, "h": 50, "label": "App   isLoggedIn", "colour": "blue" },
+    { "type": "box", "at": 1.1, "in": 0.35, "x": 120, "y": 312, "w": 430, "h": 50, "label": "PlaceList   passes it on", "colour": "muted" },
+    { "type": "box", "at": 1.4, "in": 0.35, "x": 150, "y": 374, "w": 400, "h": 50, "label": "PlaceItem   passes it on", "colour": "muted" },
+    { "type": "box", "at": 1.7, "in": 0.35, "x": 180, "y": 436, "w": 370, "h": 50, "label": "Button   finally uses it", "colour": "accent" },
+
+    { "type": "box", "at": 2.4, "in": 0.4, "x": 700, "y": 150, "w": 520, "h": 60,
+      "label": "Context", "sub": "the middle never sees it", "colour": "green" },
+    { "type": "box", "at": 2.5, "in": 0.4, "x": 700, "y": 226, "w": 520, "h": 290, "label": "", "colour": "green" },
+
+    { "type": "box", "at": 2.8, "in": 0.35, "x": 730, "y": 250, "w": 460, "h": 50, "label": "AuthContext.Provider", "colour": "purple" },
+    { "type": "box", "at": 3.1, "in": 0.35, "x": 760, "y": 312, "w": 430, "h": 50, "label": "PlaceList", "colour": "muted" },
+    { "type": "box", "at": 3.3, "in": 0.35, "x": 790, "y": 374, "w": 400, "h": 50, "label": "PlaceItem", "colour": "muted" },
+    { "type": "box", "at": 3.5, "in": 0.35, "x": 820, "y": 436, "w": 370, "h": 50, "label": "Button   useContext(Auth)", "colour": "accent" },
+
+    { "type": "arrow", "at": 4.0, "in": 0.7, "from": [712, 285], "to": [712, 455], "colour": "purple" },
+
+    { "type": "caption", "at": 4.6, "text": "useContext re-renders only the components that actually read it" },
+    { "type": "box", "at": 4.8, "in": 0.5, "x": 60, "y": 556, "w": 1160, "h": 66,
+      "label": "reach for context when the value is app-wide — not to avoid passing one prop one level", "colour": "accent" }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "title": "Where an error goes in Express",
+  "elements": [
+    { "type": "box", "at": 0.3, "in": 0.4, "x": 60, "y": 155, "w": 540, "h": 56,
+      "label": "Synchronous handler", "colour": "green" },
+    { "type": "box", "at": 0.5, "in": 0.4, "x": 60, "y": 227, "w": 540, "h": 120, "label": "", "colour": "green" },
+    { "type": "box", "at": 0.9, "in": 0.35, "x": 90, "y": 253, "w": 480, "h": 68,
+      "label": "throw new HttpError(...)", "sub": "Express catches it for you", "colour": "muted" },
+
+    { "type": "box", "at": 1.6, "in": 0.4, "x": 680, "y": 155, "w": 540, "h": 56,
+      "label": "Async handler", "colour": "purple" },
+    { "type": "box", "at": 1.7, "in": 0.4, "x": 680, "y": 227, "w": 540, "h": 120, "label": "", "colour": "purple" },
+    { "type": "box", "at": 2.1, "in": 0.35, "x": 710, "y": 253, "w": 480, "h": 68,
+      "label": "return next(new HttpError(...))", "sub": "throw is lost — you must pass it", "colour": "muted" },
+
+    { "type": "arrow", "at": 2.8, "in": 0.5, "from": [330, 353], "to": [560, 425], "colour": "muted" },
+    { "type": "arrow", "at": 3.0, "in": 0.5, "from": [950, 353], "to": [720, 425], "colour": "muted" },
+
+    { "type": "box", "at": 3.5, "in": 0.5, "x": 260, "y": 432, "w": 760, "h": 100,
+      "label": "app.use((error, req, res, next) => { ... })",
+      "sub": "four parameters, registered last — one place decides the shape", "colour": "accent" },
+
+    { "type": "arrow", "at": 4.2, "in": 0.4, "from": [640, 534], "to": [640, 544], "colour": "accent" },
+    { "type": "box", "at": 4.6, "in": 0.5, "x": 260, "y": 548, "w": 760, "h": 68,
+      "label": "{ message } + a real status code", "colour": "blue" },
+
+    { "type": "caption", "at": 5.2, "text": "a 500 with no body tells the client nothing it can act on" }
+  ]
+}

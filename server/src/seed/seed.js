@@ -715,7 +715,7 @@ const settings = {
   enrollTitle: "Tell me what you want to learn",
   enrollLede:
     "Send this and I will reply with the curriculum, the schedule, and pricing for the format you picked. No obligation.",
-  email: "hello@bugbakery.com",
+  email: "contact@bug-bakery.com",
   whatsapp: "96171375587",
   linkedin: "https://www.linkedin.com/in/elias-el-saide-941173116/",
   location: "Beirut, Lebanon",

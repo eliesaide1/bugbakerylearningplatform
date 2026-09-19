@@ -15,6 +15,7 @@ export function LessonRow({
   programSlug,
   active = false,
   compact = false,
+  enrolled = false,
 }: {
   lesson: Lesson;
   index: number;
@@ -22,9 +23,14 @@ export function LessonRow({
   active?: boolean;
   /** Syllabus listing: one line per lecture, no artwork. */
   compact?: boolean;
+  /** When true nothing is a "preview" — the whole course is open. */
+  enrolled?: boolean;
 }) {
-  const free = lesson.isFree && !lesson.locked;
-  const watchable = free && hasVideo(lesson);
+  // Whether a lesson opens is the server's call, not ours: it sets `locked`
+  // on anything this visitor may not have. A lesson needs no video to be worth
+  // opening — the written text and its exercise are the lesson too.
+  const open = !lesson.locked;
+  const preview = lesson.isFree && !enrolled;
 
   if (compact) {
     return (
@@ -33,7 +39,8 @@ export function LessonRow({
         index={index}
         programSlug={programSlug}
         active={active}
-        watchable={watchable}
+        open={open}
+        preview={preview}
       />
     );
   }
@@ -48,7 +55,7 @@ export function LessonRow({
         {active ? "▶" : String(index + 1).padStart(2, "0")}
       </span>
 
-      <Thumbnail lesson={lesson} watchable={watchable} locked={!free} />
+      <Thumbnail lesson={lesson} watchable={open && hasVideo(lesson)} locked={!open} />
 
       <span className="min-w-0">
         <span
@@ -59,11 +66,9 @@ export function LessonRow({
           {lesson.title}
         </span>
         <span className="mt-1.5 flex flex-wrap items-center gap-x-2.5 gap-y-1 text-[0.78rem] text-muted">
-          {watchable ? (
+          {preview ? (
             <span className="font-mono text-secondary-deep">preview</span>
-          ) : free ? (
-            <span className="font-mono">preview soon</span>
-          ) : (
+          ) : open ? null : (
             <span className="flex items-center gap-1 font-mono">
               <LockGlyph className="size-3" />
               locked
@@ -86,7 +91,7 @@ export function LessonRow({
       : "border-l-transparent hover:border-l-line-strong hover:bg-paper"
   }`;
 
-  if (watchable) {
+  if (open) {
     return (
       <Link to={`/watch/${programSlug}/${lesson.slug}`} className={`${shell} no-underline`}>
         {body}
@@ -107,13 +112,15 @@ function CompactRow({
   index,
   programSlug,
   active,
-  watchable,
+  open,
+  preview,
 }: {
   lesson: Lesson;
   index: number;
   programSlug: string;
   active: boolean;
-  watchable: boolean;
+  open: boolean;
+  preview: boolean;
 }) {
   const body = (
     <>
@@ -122,9 +129,11 @@ function CompactRow({
         className={`mt-px grid size-6 flex-none place-items-center rounded-[5px] border transition-colors ${
           active
             ? "border-primary bg-primary text-white"
-            : watchable
+            : preview
               ? "border-secondary bg-secondary-soft text-secondary-deep"
-              : "border-line-strong bg-paper text-muted group-hover:border-primary group-hover:text-primary"
+              : open
+                ? "border-line-strong bg-paper text-muted group-hover:border-primary group-hover:text-primary"
+                : "border-line bg-paper text-muted/70"
         }`}
       >
         {/* The glyph says what the row is — a video. Whether it is watchable
@@ -148,7 +157,7 @@ function CompactRow({
         </span>
       </span>
 
-      {watchable ? (
+      {preview ? (
         <span className="hidden rounded-full bg-secondary-soft px-2 py-0.5 font-mono text-[0.66rem] tracking-wide text-secondary-deep uppercase sm:block">
           preview
         </span>
@@ -170,7 +179,7 @@ function CompactRow({
       : "border-l-transparent hover:border-l-primary hover:bg-paper"
   }`;
 
-  if (watchable) {
+  if (open) {
     return (
       <Link to={`/watch/${programSlug}/${lesson.slug}`} className={`${shell} no-underline`}>
         {body}
@@ -239,11 +248,13 @@ export function LessonPlaylist({
   lessons,
   programSlug,
   activeSlug,
+  enrolled = false,
   className = "",
 }: {
   lessons: Lesson[];
   programSlug: string;
   activeSlug?: string;
+  enrolled?: boolean;
   className?: string;
 }) {
   if (!lessons.length) return null;
@@ -257,6 +268,7 @@ export function LessonPlaylist({
           index={index}
           programSlug={programSlug}
           active={lesson.slug === activeSlug}
+          enrolled={enrolled}
         />
       ))}
     </div>

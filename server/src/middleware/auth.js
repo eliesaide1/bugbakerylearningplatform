@@ -34,3 +34,23 @@ export function requireRole(...roles) {
     next();
   };
 }
+
+/**
+ * Sets `req.user` when a valid token is present, and carries on regardless.
+ *
+ * Public pages need to answer differently for a signed-in student — unlocking
+ * the lessons they have paid for — without turning the page itself private.
+ */
+export async function optionalAuth(req, _res, next) {
+  const header = req.headers.authorization || "";
+  const token = header.startsWith("Bearer ") ? header.slice(7) : null;
+  if (!token) return next();
+
+  try {
+    const payload = jwt.verify(token, env.jwtSecret);
+    req.user = (await User.findById(payload.id)) || undefined;
+  } catch {
+    // An expired or forged token is simply an anonymous visitor here.
+  }
+  next();
+}

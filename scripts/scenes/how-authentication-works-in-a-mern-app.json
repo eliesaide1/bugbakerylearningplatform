@@ -1,0 +1,24 @@
+{
+  "title": "A token, not a session",
+  "elements": [
+    { "type": "box", "at": 0.3, "in": 0.4, "x": 60, "y": 150, "w": 1160, "h": 56,
+      "label": "1. POST /login  —  email + password", "colour": "blue" },
+
+    { "type": "box", "at": 0.9, "in": 0.4, "x": 60, "y": 222, "w": 1160, "h": 82,
+      "label": "2. bcrypt.compare(typed, stored hash)",
+      "sub": "the stored value is a hash — it cannot be turned back into the password", "colour": "green" },
+
+    { "type": "box", "at": 1.6, "in": 0.4, "x": 60, "y": 320, "w": 1160, "h": 82,
+      "label": "3. jwt.sign({ userId, email }, SECRET, { expiresIn: '1h' })",
+      "sub": "signed, not encrypted — anyone can read it, nobody can forge it", "colour": "purple" },
+
+    { "type": "box", "at": 2.4, "in": 0.4, "x": 60, "y": 418, "w": 1160, "h": 56,
+      "label": "4. every later request:  Authorization: Bearer <token>", "colour": "accent" },
+
+    { "type": "box", "at": 3.1, "in": 0.4, "x": 60, "y": 490, "w": 1160, "h": 82,
+      "label": "5. jwt.verify(token, SECRET)  →  req.userData",
+      "sub": "the server stores nothing — the token carries who you are", "colour": "green" },
+
+    { "type": "caption", "at": 3.9, "text": "authentication = who you are   ·   authorisation = what you may touch" }
+  ]
+}

@@ -14,6 +14,8 @@ interface CurriculumProps {
   /** Totals for the listing view, where the lessons themselves are not loaded. */
   lessonCount?: number;
   runtime?: string;
+  /** Everything is open, so nothing is badged as a preview. */
+  enrolled?: boolean;
   className?: string;
 }
 
@@ -31,6 +33,7 @@ export function Curriculum({
   activeSlug,
   lessonCount,
   runtime,
+  enrolled = false,
   className = "",
 }: CurriculumProps) {
   const assigned = useMemo(() => lessons ?? [], [lessons]);
@@ -157,6 +160,7 @@ export function Curriculum({
                           programSlug={programSlug ?? ""}
                           active={lesson.slug === activeSlug}
                           compact
+                          enrolled={enrolled}
                         />
                       ))}
                     </div>
@@ -186,6 +190,7 @@ export function Curriculum({
                 index={position.get(lesson.id) ?? 0}
                 programSlug={programSlug}
                 active={lesson.slug === activeSlug}
+                enrolled={enrolled}
               />
             ))}
           </div>

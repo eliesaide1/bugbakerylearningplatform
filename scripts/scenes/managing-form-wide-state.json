@@ -1,0 +1,31 @@
+{
+  "title": "Form-wide state: one reducer, many inputs",
+  "elements": [
+    { "type": "box", "at": 0.3, "in": 0.4, "x": 70, "y": 150, "w": 400, "h": 60,
+      "label": "NewPlace", "sub": "owns the form state", "colour": "blue" },
+    { "type": "box", "at": 0.5, "in": 0.4, "x": 70, "y": 226, "w": 400, "h": 250, "label": "", "colour": "blue" },
+
+    { "type": "box", "at": 0.9, "in": 0.4, "x": 100, "y": 252, "w": 340, "h": 88,
+      "label": "formState", "sub": "{ inputs: {…}, isValid: false }", "colour": "purple" },
+    { "type": "box", "at": 1.3, "in": 0.4, "x": 100, "y": 364, "w": 340, "h": 88,
+      "label": "formReducer", "sub": "recomputes isValid on every change", "colour": "green" },
+
+    { "type": "box", "at": 2.0, "in": 0.4, "x": 810, "y": 150, "w": 400, "h": 60,
+      "label": "Input components", "sub": "own only their own value", "colour": "accent" },
+    { "type": "box", "at": 2.2, "in": 0.4, "x": 810, "y": 226, "w": 400, "h": 250, "label": "", "colour": "accent" },
+
+    { "type": "box", "at": 2.5, "in": 0.35, "x": 840, "y": 252, "w": 340, "h": 60,
+      "label": "Input  id=\"title\"", "colour": "muted" },
+    { "type": "box", "at": 2.8, "in": 0.35, "x": 840, "y": 326, "w": 340, "h": 60,
+      "label": "Input  id=\"description\"", "colour": "muted" },
+    { "type": "box", "at": 3.1, "in": 0.35, "x": 840, "y": 400, "w": 340, "h": 60,
+      "label": "Input  id=\"address\"", "colour": "muted" },
+
+    { "type": "arrow", "at": 3.6, "in": 0.6, "from": [806, 300], "to": [478, 300], "colour": "accent" },
+    { "type": "arrow", "at": 4.2, "in": 0.6, "from": [478, 420], "to": [806, 420], "colour": "green" },
+
+    { "type": "caption", "at": 4.8, "text": "up: onInput(id, value, isValid)   ·   down: the submit button's disabled state" },
+    { "type": "box", "at": 5.0, "in": 0.5, "x": 70, "y": 528, "w": 1140, "h": 76,
+      "label": "each input reports; only the form knows whether the whole thing is valid", "colour": "accent" }
+  ]
+}

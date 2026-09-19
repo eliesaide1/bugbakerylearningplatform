@@ -6,11 +6,23 @@ import { Faq } from "../models/Faq.js";
 import { Technology } from "../models/Technology.js";
 import { SiteSettings } from "../models/SiteSettings.js";
 import { Theme } from "../models/Theme.js";
+import { ProgramAccess } from "../models/ProgramAccess.js";
 import { asyncHandler, httpError, requireDb } from "../middleware/error.js";
+import { optionalAuth } from "../middleware/auth.js";
 import { runtimeOf } from "../lib/duration.js";
 
 const router = Router();
 router.use(requireDb);
+// Reading a program is public, but a signed-in student should see the lessons
+// they have access to rather than the same locked shell as a stranger.
+router.use(optionalAuth);
+
+/** Has this visitor been granted this program? */
+const hasAccess = async (user, programId) => {
+  if (!user) return false;
+  if (user.role === "admin" || user.role === "editor") return true;
+  return Boolean(await ProgramAccess.exists({ trainee: user._id, program: programId }));
+};
 
 const visible = { visible: true };
 const byOrder = { order: 1, createdAt: 1 };
@@ -72,9 +84,14 @@ router.get(
       .sort(byOrder)
       .populate("media thumbnail");
 
+    const unlocked = await hasAccess(req.user, program._id);
+
     res.json({
       ...program.toJSON(),
-      lessons: lessons.map((l) => (l.isFree ? l.toJSON() : stripLocked(l.toJSON()))),
+      enrolled: unlocked,
+      lessons: lessons.map((l) =>
+        unlocked || l.isFree ? l.toJSON() : stripLocked(l.toJSON())
+      ),
     });
   })
 );
@@ -92,7 +109,9 @@ router.get(
       ...visible,
     }).populate("media thumbnail");
     if (!lesson) throw httpError(404, "That lesson does not exist.");
-    if (!lesson.isFree) throw httpError(403, "This lesson is part of the paid program.");
+    if (!lesson.isFree && !(await hasAccess(req.user, program._id))) {
+      throw httpError(403, "Enrol on this program to open this lesson.");
+    }
 
     res.json({ ...lesson.toJSON(), program: { id: program.id, title: program.title, slug: program.slug } });
   })

@@ -4,6 +4,9 @@ dist/
 .env.local
 server/uploads/*
 !server/uploads/.gitkeep
+# Lesson diagrams are generated source assets, not user uploads: they are
+# rendered from scripts/scenes/*.json and every lesson page links to one.
+!server/uploads/diagrams/
 *.log
 .DS_Store
 

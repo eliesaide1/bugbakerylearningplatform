@@ -87,6 +87,34 @@ export interface Section {
   updatedAt?: string;
 }
 
+/** One instant rule against what the learner typed. */
+export interface PracticeCheck {
+  kind: "contains" | "not-contains" | "regex";
+  value: string;
+  message?: string;
+  caseSensitive?: boolean;
+}
+
+/** A statement to judge, where there is nothing to build. */
+export interface PracticeQuestion {
+  statement: string;
+  answer: boolean;
+  because?: string;
+}
+
+/** The hands-on under the lesson: try it, and find out at once. */
+export interface LessonPractice {
+  brief?: string;
+  /** What the code should print or return when it works. */
+  expect?: string;
+  starter?: string;
+  language?: string;
+  hints?: string[];
+  solution?: string;
+  checks: PracticeCheck[];
+  questions?: PracticeQuestion[];
+}
+
 export interface Lesson {
   id: string;
   program: string;
@@ -102,6 +130,9 @@ export interface Lesson {
   module?: number | null;
   isFree: boolean;
   locked?: boolean;
+  /** A diagram shown with the lesson text. */
+  diagram?: string;
+  practice?: LessonPractice | null;
   order: number;
   visible: boolean;
 }
@@ -121,6 +152,8 @@ export interface ProgramModule {
 }
 
 export interface Program {
+  /** True when the signed-in visitor has access to every lesson. */
+  enrolled?: boolean;
   id: string;
   title: string;
   slug: string;
@@ -187,6 +220,8 @@ export interface Announcement {
 }
 
 export interface SiteSettings {
+  /** How a student obtains an access code, shown on the enrol screen. */
+  enrolHowTo?: string;
   id: string;
   brandName: string;
   brandTagline: string;

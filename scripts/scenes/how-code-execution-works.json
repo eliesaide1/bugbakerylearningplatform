@@ -1,0 +1,33 @@
+{
+  "title": "One thread, and why it is not a problem",
+  "elements": [
+    { "type": "box", "at": 0.3, "in": 0.4, "x": 60, "y": 150, "w": 340, "h": 60,
+      "label": "Call stack", "sub": "one thing at a time", "colour": "blue" },
+    { "type": "box", "at": 0.5, "in": 0.4, "x": 60, "y": 226, "w": 340, "h": 200, "label": "", "colour": "blue" },
+    { "type": "box", "at": 0.9, "in": 0.35, "x": 90, "y": 252, "w": 280, "h": 50, "label": "your JavaScript", "colour": "muted" },
+    { "type": "box", "at": 1.1, "in": 0.35, "x": 90, "y": 314, "w": 280, "h": 50, "label": "runs to completion", "colour": "muted" },
+    { "type": "box", "at": 1.3, "in": 0.35, "x": 90, "y": 366, "w": 280, "h": 44, "label": "never blocks on I/O", "colour": "accent" },
+
+    { "type": "box", "at": 1.9, "in": 0.4, "x": 470, "y": 150, "w": 340, "h": 60,
+      "label": "libuv", "sub": "a real thread pool, in C", "colour": "green" },
+    { "type": "box", "at": 2.0, "in": 0.4, "x": 470, "y": 226, "w": 340, "h": 200, "label": "", "colour": "green" },
+    { "type": "box", "at": 2.3, "in": 0.35, "x": 500, "y": 252, "w": 280, "h": 50, "label": "file reads", "colour": "muted" },
+    { "type": "box", "at": 2.5, "in": 0.35, "x": 500, "y": 314, "w": 280, "h": 50, "label": "network sockets", "colour": "muted" },
+    { "type": "box", "at": 2.7, "in": 0.35, "x": 500, "y": 366, "w": 280, "h": 44, "label": "database queries", "colour": "muted" },
+
+    { "type": "box", "at": 3.3, "in": 0.4, "x": 880, "y": 150, "w": 340, "h": 60,
+      "label": "Callback queue", "sub": "finished work, waiting", "colour": "purple" },
+    { "type": "box", "at": 3.4, "in": 0.4, "x": 880, "y": 226, "w": 340, "h": 200, "label": "", "colour": "purple" },
+    { "type": "box", "at": 3.7, "in": 0.35, "x": 910, "y": 252, "w": 280, "h": 50, "label": "the .then() body", "colour": "muted" },
+    { "type": "box", "at": 3.9, "in": 0.35, "x": 910, "y": 314, "w": 280, "h": 50, "label": "the line after await", "colour": "muted" },
+    { "type": "box", "at": 4.1, "in": 0.35, "x": 910, "y": 366, "w": 280, "h": 44, "label": "your route handler", "colour": "muted" },
+
+    { "type": "arrow", "at": 4.6, "in": 0.5, "from": [406, 300], "to": [466, 300], "colour": "muted" },
+    { "type": "arrow", "at": 5.0, "in": 0.5, "from": [816, 300], "to": [876, 300], "colour": "muted" },
+    { "type": "arrow", "at": 5.4, "in": 0.7, "from": [1050, 432], "to": [230, 432], "colour": "accent" },
+
+    { "type": "caption", "at": 6.0, "text": "the event loop: when the stack is empty, take the next callback" },
+    { "type": "box", "at": 6.2, "in": 0.5, "x": 60, "y": 500, "w": 1160, "h": 80,
+      "label": "one slow synchronous loop freezes every request — that is the only way to break this", "colour": "accent" }
+  ]
+}

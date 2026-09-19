@@ -1,0 +1,30 @@
+{
+  "title": "Middleware: one request, a chain of small functions",
+  "elements": [
+    { "type": "box", "at": 0.3, "in": 0.4, "x": 60, "y": 165, "w": 190, "h": 96,
+      "label": "request", "sub": "POST /api/places", "colour": "blue" },
+
+    { "type": "box", "at": 0.9, "in": 0.4, "x": 300, "y": 165, "w": 210, "h": 96,
+      "label": "express.json()", "sub": "body → req.body", "colour": "green" },
+    { "type": "box", "at": 1.4, "in": 0.4, "x": 560, "y": 165, "w": 210, "h": 96,
+      "label": "checkAuth", "sub": "token → req.user", "colour": "green" },
+    { "type": "box", "at": 1.9, "in": 0.4, "x": 820, "y": 165, "w": 210, "h": 96,
+      "label": "placesRoutes", "sub": "the handler", "colour": "accent" },
+    { "type": "box", "at": 2.4, "in": 0.4, "x": 1080, "y": 165, "w": 140, "h": 96,
+      "label": "response", "colour": "purple" },
+
+    { "type": "arrow", "at": 2.9, "in": 0.3, "from": [254, 213], "to": [296, 213], "colour": "muted" },
+    { "type": "arrow", "at": 3.1, "in": 0.3, "from": [514, 213], "to": [556, 213], "colour": "muted" },
+    { "type": "arrow", "at": 3.3, "in": 0.3, "from": [774, 213], "to": [816, 213], "colour": "muted" },
+    { "type": "arrow", "at": 3.5, "in": 0.3, "from": [1034, 213], "to": [1076, 213], "colour": "muted" },
+
+    { "type": "box", "at": 4.0, "in": 0.5, "x": 300, "y": 300, "w": 730, "h": 76,
+      "label": "each one calls next() — or answers, and the chain stops there", "colour": "accent" },
+
+    { "type": "box", "at": 4.8, "in": 0.5, "x": 60, "y": 420, "w": 1160, "h": 96,
+      "label": "error handler: (err, req, res, next)", "sub": "four arguments — anything thrown or passed to next(err) lands here", "colour": "purple" },
+    { "type": "arrow", "at": 5.4, "in": 0.5, "from": [665, 382], "to": [665, 416], "colour": "purple" },
+
+    { "type": "caption", "at": 5.9, "text": "order is everything: a middleware registered after the handler never runs" }
+  ]
+}

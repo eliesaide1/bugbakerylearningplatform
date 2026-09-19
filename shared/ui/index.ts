@@ -13,6 +13,7 @@ export type { Option } from "./SelectBox";
 export { Chip, Badge } from "./Chip";
 export { Container, Band, Card, Divider } from "./Layout";
 export { Eyebrow, SectionHeading, RichText, BulletList } from "./Text";
+export { Prose } from "./Prose";
 export { Accordion, ToggleIcon } from "./Accordion";
 export { Image, PlayIcon } from "./Image";
 export { Alert, Spinner, Skeleton, EmptyState } from "./Feedback";

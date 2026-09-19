@@ -1,0 +1,27 @@
+{
+  "title": "Schema, model, document",
+  "elements": [
+    { "type": "box", "at": 0.3, "in": 0.4, "x": 70, "y": 170, "w": 330, "h": 120,
+      "tag": "schema", "label": "the shape", "sub": "fields, types, required", "colour": "blue" },
+    { "type": "box", "at": 1.0, "in": 0.4, "x": 475, "y": 170, "w": 330, "h": 120,
+      "tag": "model", "label": "the constructor", "sub": "find, create, save", "colour": "green" },
+    { "type": "box", "at": 1.7, "in": 0.4, "x": 880, "y": 170, "w": 330, "h": 120,
+      "tag": "document", "label": "one record", "sub": "an instance you can save", "colour": "accent" },
+
+    { "type": "arrow", "at": 2.3, "in": 0.4, "from": [404, 230], "to": [471, 230], "colour": "muted" },
+    { "type": "arrow", "at": 2.6, "in": 0.4, "from": [809, 230], "to": [876, 230], "colour": "muted" },
+
+    { "type": "box", "at": 3.2, "in": 0.5, "x": 70, "y": 330, "w": 330, "h": 80,
+      "label": "new Schema({ ... })", "colour": "muted" },
+    { "type": "box", "at": 3.5, "in": 0.5, "x": 475, "y": 330, "w": 330, "h": 80,
+      "label": "model('Product', schema)", "colour": "muted" },
+    { "type": "box", "at": 3.8, "in": 0.5, "x": 880, "y": 330, "w": 330, "h": 80,
+      "label": "new Product({ ... })", "colour": "muted" },
+
+    { "type": "box", "at": 4.5, "in": 0.5, "x": 70, "y": 450, "w": 1140, "h": 100,
+      "label": "'Product'  →  the products collection",
+      "sub": "Mongoose lowercases and pluralises the model name for you", "colour": "purple" },
+
+    { "type": "caption", "at": 5.2, "text": "the schema is enforced in your application, not by MongoDB" }
+  ]
+}

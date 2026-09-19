@@ -1,0 +1,28 @@
+{
+  "title": "One click, all the way down",
+  "narration": "Follow a single click and the whole stack explains itself. A user opens the app and asks to see all places. React renders the page, and because it has no data yet, it fires a request. GET slash api slash places. That request leaves the browser entirely. Express receives it on the server. It matches the URL and the method against its routes, and calls the function you wrote for that combination. That function asks MongoDB for the matching documents, and Mongoose turns the result into ordinary JavaScript objects. Express sends those objects back as JSON. React receives them, stores them in state, and re-renders. The list appears. Two things are worth noticing. The browser and the server are separate programs that only ever exchange JSON over HTTP. And React never talks to the database — it has no credentials and no connection, which is exactly why your database is not exposed to the internet. Every feature in this course is a variation of that round trip. Adding a place is a POST. Deleting one is a DELETE with an id. Once the shape is familiar, the rest is detail.",
+  "elements": [
+    { "type": "caption", "at": 0.0, "text": "A request leaves the browser and comes back as data" },
+
+    { "type": "box", "at": 0.8, "in": 0.6, "x": 110, "y": 230, "w": 260, "h": 150,
+      "tag": "browser", "label": "React", "sub": "renders, then asks", "colour": "blue" },
+    { "type": "box", "at": 5.0, "in": 0.6, "x": 510, "y": 230, "w": 260, "h": 150,
+      "tag": "server", "label": "Express", "sub": "matches the route", "colour": "green" },
+    { "type": "box", "at": 9.0, "in": 0.6, "x": 910, "y": 230, "w": 260, "h": 150,
+      "tag": "data", "label": "MongoDB", "sub": "returns documents", "colour": "purple" },
+
+    { "type": "arrow", "at": 3.4, "in": 0.8, "from": [370, 280], "to": [510, 280],
+      "label": "GET /api/places", "colour": "accent" },
+    { "type": "arrow", "at": 8.2, "in": 0.8, "from": [770, 280], "to": [910, 280],
+      "label": "find()", "colour": "accent" },
+
+    { "type": "arrow", "at": 13.0, "in": 0.8, "from": [910, 340], "to": [770, 340],
+      "label": "documents", "colour": "green" },
+    { "type": "arrow", "at": 15.0, "in": 0.8, "from": [510, 340], "to": [370, 340],
+      "label": "JSON", "colour": "green" },
+
+    { "type": "caption", "at": 18.0, "text": "React never touches the database — that is why it is not on the internet" },
+    { "type": "box", "at": 18.4, "in": 0.7, "x": 110, "y": 455, "w": 1060, "h": 80,
+      "label": "POST to add  ·  DELETE with an id  ·  same round trip every time", "colour": "accent" }
+  ]
+}

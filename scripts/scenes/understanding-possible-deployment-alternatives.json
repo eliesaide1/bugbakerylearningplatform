@@ -1,0 +1,31 @@
+{
+  "title": "Three ways to ship the same app",
+  "elements": [
+    { "type": "box", "at": 0.3, "in": 0.4, "x": 60, "y": 150, "w": 360, "h": 56,
+      "label": "Separate", "colour": "blue" },
+    { "type": "box", "at": 0.5, "in": 0.4, "x": 60, "y": 218, "w": 360, "h": 210, "label": "", "colour": "blue" },
+    { "type": "box", "at": 0.8, "in": 0.35, "x": 85, "y": 240, "w": 310, "h": 50, "label": "SPA on a CDN", "colour": "muted" },
+    { "type": "box", "at": 1.0, "in": 0.35, "x": 85, "y": 300, "w": 310, "h": 50, "label": "API on a host", "colour": "muted" },
+    { "type": "box", "at": 1.2, "in": 0.35, "x": 85, "y": 360, "w": 310, "h": 54, "label": "needs CORS", "colour": "accent" },
+
+    { "type": "box", "at": 1.8, "in": 0.4, "x": 460, "y": 150, "w": 360, "h": 56,
+      "label": "Combined", "colour": "green" },
+    { "type": "box", "at": 1.9, "in": 0.4, "x": 460, "y": 218, "w": 360, "h": 210, "label": "", "colour": "green" },
+    { "type": "box", "at": 2.2, "in": 0.35, "x": 485, "y": 240, "w": 310, "h": 50, "label": "Express serves build/", "colour": "muted" },
+    { "type": "box", "at": 2.4, "in": 0.35, "x": 485, "y": 300, "w": 310, "h": 50, "label": "one origin, one host", "colour": "muted" },
+    { "type": "box", "at": 2.6, "in": 0.35, "x": 485, "y": 360, "w": 310, "h": 54, "label": "no CORS at all", "colour": "green" },
+
+    { "type": "box", "at": 3.2, "in": 0.4, "x": 860, "y": 150, "w": 360, "h": 56,
+      "label": "Serverless", "colour": "purple" },
+    { "type": "box", "at": 3.3, "in": 0.4, "x": 860, "y": 218, "w": 360, "h": 210, "label": "", "colour": "purple" },
+    { "type": "box", "at": 3.6, "in": 0.35, "x": 885, "y": 240, "w": 310, "h": 50, "label": "routes as functions", "colour": "muted" },
+    { "type": "box", "at": 3.8, "in": 0.35, "x": 885, "y": 300, "w": 310, "h": 50, "label": "scales to zero", "colour": "muted" },
+    { "type": "box", "at": 4.0, "in": 0.35, "x": 885, "y": 360, "w": 310, "h": 54, "label": "cold starts, no disk", "colour": "accent" },
+
+    { "type": "box", "at": 4.7, "in": 0.5, "x": 60, "y": 470, "w": 1160, "h": 96,
+      "label": "uploaded files do not survive any of them",
+      "sub": "container filesystems are ephemeral — object storage is the answer in all three cases", "colour": "accent" },
+
+    { "type": "caption", "at": 5.4, "text": "combined is the simplest to get right; separate is what most teams end up with" }
+  ]
+}

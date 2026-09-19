@@ -38,6 +38,12 @@ const settingsSchema = new mongoose.Schema(
 
     email: String,
     whatsapp: String,
+    /**
+     * Shown on the enrol screen above the code box. How a student actually
+     * gets a code is a business decision, not a code one, so it is written
+     * here rather than baked into the page.
+     */
+    enrolHowTo: String,
     linkedin: String,
     location: String,
     footerNote: String,

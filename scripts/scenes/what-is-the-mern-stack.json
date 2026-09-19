@@ -1,0 +1,27 @@
+{
+  "title": "What is the MERN stack?",
+  "narration": "MERN is four tools that between them cover everything a web application needs. React is the front end — the only part the user ever sees. It runs in the browser, and it turns your data into a screen. Node is JavaScript running outside a browser. Before it existed, JavaScript could only run on a page. Node lets the same language run on a server. Express is a thin framework that sits on top of Node. It gives you routing — when a GET arrives at slash api slash places, run this function — plus middleware, a chain of small functions that every request passes through. And MongoDB is the database. Rather than tables with fixed columns, it stores documents that look very much like JavaScript objects. That is why they are learned together. One language runs the whole way down. The object you build in React is the JSON you send to Express, and it is the document you store in Mongo. There is no translation layer anywhere in the middle.",
+  "elements": [
+    { "type": "caption", "at": 0.0, "text": "Four tools, one language" },
+
+    { "type": "box", "at": 1.2, "in": 0.6, "x": 96,  "y": 210, "w": 250, "h": 150,
+      "tag": "browser", "label": "React", "sub": "what the user sees", "colour": "blue" },
+
+    { "type": "box", "at": 4.6, "in": 0.6, "x": 396, "y": 210, "w": 250, "h": 150,
+      "tag": "server", "label": "Node", "sub": "JavaScript, off the page", "colour": "green" },
+
+    { "type": "box", "at": 8.0, "in": 0.6, "x": 696, "y": 210, "w": 250, "h": 150,
+      "tag": "server", "label": "Express", "sub": "routing + middleware", "colour": "green" },
+
+    { "type": "box", "at": 11.4, "in": 0.6, "x": 996, "y": 210, "w": 220, "h": 150,
+      "tag": "data", "label": "MongoDB", "sub": "documents, not rows", "colour": "purple" },
+
+    { "type": "arrow", "at": 14.0, "in": 0.5, "from": [346, 285], "to": [396, 285], "colour": "muted" },
+    { "type": "arrow", "at": 14.6, "in": 0.5, "from": [646, 285], "to": [696, 285], "colour": "muted" },
+    { "type": "arrow", "at": 15.2, "in": 0.5, "from": [946, 285], "to": [996, 285], "colour": "muted" },
+
+    { "type": "caption", "at": 16.0, "text": "JavaScript the whole way down — no translation layer" },
+    { "type": "box", "at": 16.2, "in": 0.7, "x": 96, "y": 440, "w": 1120, "h": 86,
+      "label": "one object: React state  →  JSON over HTTP  →  a Mongo document", "colour": "accent" }
+  ]
+}

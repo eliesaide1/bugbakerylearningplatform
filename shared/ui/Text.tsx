@@ -51,10 +51,35 @@ export function RichText({ text, className = "" }: { text?: string; className?: 
   return (
     <div className={`prose-body ${className}`}>
       {text.split(/\n{2,}/).map((para, i) => (
-        <p key={i}>{para}</p>
+        <p key={i}>{inline(para)}</p>
       ))}
     </div>
   );
+}
+
+/**
+ * The two marks worth supporting in a CMS text box: **bold** and `code`.
+ *
+ * Not a markdown parser — a whole one would invite headings and tables into
+ * fields that are laid out as paragraphs, and would mean trusting editor input
+ * as markup. This only recognises two delimiters and still renders text, so
+ * nothing an author types can become HTML.
+ */
+function inline(text: string) {
+  const parts = text.split(/(\*\*[^*]+\*\*|`[^`]+`)/g);
+  return parts.map((part, i) => {
+    if (part.startsWith("**") && part.endsWith("**") && part.length > 4) {
+      return <b key={i} className="font-semibold text-ink">{part.slice(2, -2)}</b>;
+    }
+    if (part.startsWith("`") && part.endsWith("`") && part.length > 2) {
+      return (
+        <code key={i} className="rounded-[3px] bg-paper px-1 py-0.5 font-mono text-[0.9em]">
+          {part.slice(1, -1)}
+        </code>
+      );
+    }
+    return part;
+  });
 }
 
 /** Bulleted list stored one item per line in a CMS text field. */

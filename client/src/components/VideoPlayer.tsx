@@ -1,4 +1,5 @@
-import { asMedia, mediaUrl } from "../api/client";
+import { mediaUrl } from "../api/client";
+import { LessonPlayer } from "./player/LessonPlayer";
 import type { Lesson, Media, Ref } from "@shared/types";
 
 /** youtu.be/ID, /watch?v=ID and /embed/ID all normalise to an embed url. */
@@ -32,15 +33,13 @@ export function VideoPlayer({ lesson, poster, className = "" }: VideoPlayerProps
 
   if (lesson.source === "upload" && uploaded) {
     return (
-      <video
-        controls
-        preload="metadata"
+      <LessonPlayer
+        src={uploaded}
         poster={mediaUrl(poster ?? lesson.thumbnail) ?? undefined}
-        className={`${FRAME} ${className}`}
-      >
-        <source src={uploaded} type={asMedia(lesson.media)?.mimeType || "video/mp4"} />
-        Your browser cannot play this video.
-      </video>
+        title={lesson.title}
+        lessonId={lesson.id}
+        className={className}
+      />
     );
   }
 
@@ -58,12 +57,16 @@ export function VideoPlayer({ lesson, poster, className = "" }: VideoPlayerProps
     );
   }
 
+  // Anything else we serve ourselves — an HLS ladder or a plain file.
   if (external) {
     return (
-      <video controls preload="metadata" className={`${FRAME} ${className}`}>
-        <source src={external} />
-        Your browser cannot play this video.
-      </video>
+      <LessonPlayer
+        src={external}
+        poster={mediaUrl(poster ?? lesson.thumbnail) ?? undefined}
+        title={lesson.title}
+        lessonId={lesson.id}
+        className={className}
+      />
     );
   }
 

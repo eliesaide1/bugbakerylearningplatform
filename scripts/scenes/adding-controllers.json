@@ -1,0 +1,113 @@
+{
+  "title": "Routes say what exists. Controllers say what happens.",
+  "elements": [
+    {
+      "type": "box",
+      "at": 0.3,
+      "in": 0.4,
+      "x": 90,
+      "y": 150,
+      "w": 300,
+      "h": 110,
+      "tag": "app.js",
+      "label": "mount + middleware",
+      "sub": "a dozen lines, forever",
+      "colour": "blue"
+    },
+    {
+      "type": "box",
+      "at": 1.0,
+      "in": 0.4,
+      "x": 490,
+      "y": 150,
+      "w": 300,
+      "h": 110,
+      "tag": "routes/",
+      "label": "places-routes.js",
+      "sub": "paths, methods, validators",
+      "colour": "green"
+    },
+    {
+      "type": "box",
+      "at": 1.7,
+      "in": 0.4,
+      "x": 890,
+      "y": 150,
+      "w": 300,
+      "h": 110,
+      "tag": "controllers/",
+      "label": "places-controllers.js",
+      "sub": "the actual work",
+      "colour": "accent"
+    },
+    {
+      "type": "arrow",
+      "at": 2.3,
+      "in": 0.4,
+      "from": [
+        394,
+        205
+      ],
+      "to": [
+        486,
+        205
+      ],
+      "colour": "muted"
+    },
+    {
+      "type": "arrow",
+      "at": 2.6,
+      "in": 0.4,
+      "from": [
+        794,
+        205
+      ],
+      "to": [
+        886,
+        205
+      ],
+      "colour": "muted"
+    },
+    {
+      "type": "box",
+      "at": 3.2,
+      "in": 0.5,
+      "x": 310,
+      "y": 310,
+      "w": 420,
+      "h": 96,
+      "label": "router.get('/:pid', …)",
+      "sub": "one line per route",
+      "colour": "muted"
+    },
+    {
+      "type": "box",
+      "at": 3.6,
+      "in": 0.5,
+      "x": 770,
+      "y": 310,
+      "w": 420,
+      "h": 96,
+      "label": "getPlaceById(req, res, next)",
+      "sub": "find it, or 404",
+      "colour": "muted"
+    },
+    {
+      "type": "box",
+      "at": 4.4,
+      "in": 0.5,
+      "x": 90,
+      "y": 450,
+      "w": 1100,
+      "h": 90,
+      "label": "section 8 changes only the right-hand column",
+      "sub": "DUMMY_PLACES.find(...)  →  await Place.findById(...)",
+      "colour": "purple"
+    },
+    {
+      "type": "caption",
+      "at": 5.2,
+      "text": "read the route file and you know the API — without reading any logic"
+    }
+  ]
+}

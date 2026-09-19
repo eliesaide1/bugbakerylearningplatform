@@ -8,19 +8,25 @@ import TrackPage from "./pages/TrackPage";
 import WorkspacePage from "./pages/WorkspacePage";
 import JoinPage from "./pages/JoinPage";
 import AccountPage from "./pages/AccountPage";
+import EnrollPage from "./pages/EnrollPage";
 import { PageState } from "./components/PageState";
 import { LiveUpdateToast } from "./realtime/RealtimeProvider";
 import { useThemeSync } from "./hooks/useThemeSync";
+import { useHashScroll } from "./hooks/useHashScroll";
 
 export default function App() {
   // Keeps :root in step with the palette the CMS is publishing.
   useThemeSync();
+  // Arriving at /#section from another route, the section is not in the DOM
+  // yet when the browser looks for it. Scroll once it is.
+  useHashScroll();
 
   return (
     <>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/programs/:slug" element={<ProgramPage />} />
+        <Route path="/programs/:slug/enroll" element={<EnrollPage />} />
         <Route path="/watch/:programSlug/:lessonSlug" element={<LessonPage />} />
         <Route path="/book" element={<BookPage />} />
         <Route path="/bootcamp" element={<BootcampPage />} />

@@ -1,0 +1,25 @@
+{
+  "title": "Two writes that must both happen",
+  "elements": [
+    { "type": "box", "at": 0.3, "in": 0.4, "x": 60, "y": 150, "w": 1160, "h": 60,
+      "label": "createPlace", "sub": "one request, two documents", "colour": "blue" },
+
+    { "type": "box", "at": 0.9, "in": 0.4, "x": 110, "y": 245, "w": 470, "h": 90,
+      "label": "save the place", "sub": "into the places collection", "colour": "green" },
+    { "type": "box", "at": 1.3, "in": 0.4, "x": 700, "y": 245, "w": 470, "h": 90,
+      "label": "push its id onto the user", "sub": "user.places.push(place)", "colour": "green" },
+
+    { "type": "box", "at": 2.0, "in": 0.5, "x": 110, "y": 370, "w": 1060, "h": 84,
+      "label": "without a transaction: the first succeeds, the second fails",
+      "sub": "a place nobody owns — and nothing tells you it happened", "colour": "accent" },
+
+    { "type": "box", "at": 2.9, "in": 0.5, "x": 110, "y": 478, "w": 1060, "h": 110,
+      "label": "session.startTransaction()  …  commitTransaction()",
+      "sub": "both writes land, or neither does — needs a replica set, which Atlas gives you", "colour": "purple" },
+
+    { "type": "arrow", "at": 3.6, "in": 0.3, "from": [345, 339], "to": [345, 366], "colour": "muted" },
+    { "type": "arrow", "at": 3.8, "in": 0.3, "from": [935, 339], "to": [935, 366], "colour": "muted" },
+
+    { "type": "caption", "at": 4.3, "text": "the failure mode is silent, which is what makes it worth the extra lines" }
+  ]
+}

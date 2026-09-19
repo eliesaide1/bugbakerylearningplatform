@@ -1,0 +1,23 @@
+{
+  "title": "Reference, or embed",
+  "elements": [
+    { "type": "box", "at": 0.3, "in": 0.4, "x": 60, "y": 150, "w": 540, "h": 60,
+      "label": "Embed", "sub": "the place lives inside the user", "colour": "muted" },
+    { "type": "box", "at": 0.5, "in": 0.4, "x": 60, "y": 226, "w": 540, "h": 230, "label": "", "colour": "muted" },
+    { "type": "box", "at": 0.9, "in": 0.35, "x": 90, "y": 252, "w": 480, "h": 62, "label": "user { places: [ {…}, {…} ] }", "colour": "muted" },
+    { "type": "box", "at": 1.3, "in": 0.35, "x": 90, "y": 326, "w": 480, "h": 52, "label": "one read gets everything", "colour": "green" },
+    { "type": "box", "at": 1.6, "in": 0.35, "x": 90, "y": 390, "w": 480, "h": 52, "label": "a place alone is unreachable", "colour": "accent" },
+
+    { "type": "box", "at": 2.3, "in": 0.4, "x": 680, "y": 150, "w": 540, "h": 60,
+      "label": "Reference", "sub": "each stores the other's id", "colour": "blue" },
+    { "type": "box", "at": 2.4, "in": 0.4, "x": 680, "y": 226, "w": 540, "h": 230, "label": "", "colour": "blue" },
+    { "type": "box", "at": 2.8, "in": 0.35, "x": 710, "y": 252, "w": 480, "h": 62, "label": "place { creator: ObjectId }", "colour": "muted" },
+    { "type": "box", "at": 3.1, "in": 0.35, "x": 710, "y": 326, "w": 480, "h": 52, "label": "user  { places: [ ObjectId ] }", "colour": "muted" },
+    { "type": "box", "at": 3.5, "in": 0.35, "x": 710, "y": 390, "w": 480, "h": 52, "label": "populate() resolves either way", "colour": "green" },
+
+    { "type": "caption", "at": 4.2, "text": "two documents, two writes — which is why creating a place needs a transaction" },
+    { "type": "box", "at": 4.4, "in": 0.5, "x": 60, "y": 492, "w": 1160, "h": 96,
+      "label": "YourPlaces references, in both directions",
+      "sub": "a place is a thing on its own, and both sides need to be queryable without the other", "colour": "purple" }
+  ]
+}

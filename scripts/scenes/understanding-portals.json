@@ -1,0 +1,32 @@
+{
+  "title": "Portals: one tree, two places in the DOM",
+  "elements": [
+    { "type": "box", "at": 0.3, "in": 0.4, "x": 70, "y": 150, "w": 520, "h": 60,
+      "label": "React tree", "sub": "where the component lives", "colour": "blue" },
+    { "type": "box", "at": 0.5, "in": 0.4, "x": 70, "y": 226, "w": 520, "h": 262, "label": "",
+      "colour": "blue" },
+
+    { "type": "box", "at": 1.0, "in": 0.4, "x": 110, "y": 252, "w": 440, "h": 54,
+      "label": "PlaceList", "colour": "muted" },
+    { "type": "box", "at": 1.4, "in": 0.4, "x": 150, "y": 322, "w": 400, "h": 54,
+      "label": "PlaceItem", "colour": "muted" },
+    { "type": "box", "at": 1.8, "in": 0.4, "x": 190, "y": 392, "w": 360, "h": 68,
+      "label": "Modal", "sub": "nested three levels deep", "colour": "accent" },
+
+    { "type": "box", "at": 2.4, "in": 0.4, "x": 690, "y": 150, "w": 520, "h": 60,
+      "label": "The DOM", "sub": "where the node is painted", "colour": "green" },
+    { "type": "box", "at": 2.5, "in": 0.4, "x": 690, "y": 226, "w": 520, "h": 262, "label": "",
+      "colour": "green" },
+
+    { "type": "box", "at": 2.8, "in": 0.4, "x": 730, "y": 258, "w": 440, "h": 82,
+      "label": "div#root", "sub": "overflow, transforms, z-index", "colour": "muted" },
+    { "type": "box", "at": 3.2, "in": 0.4, "x": 730, "y": 372, "w": 440, "h": 82,
+      "label": "div#modal-hook", "sub": "a clean sibling, nothing clips it", "colour": "purple" },
+
+    { "type": "arrow", "at": 3.8, "in": 0.6, "from": [560, 426], "to": [726, 413], "colour": "accent" },
+
+    { "type": "caption", "at": 4.4, "text": "createPortal(jsx, document.getElementById('modal-hook'))" },
+    { "type": "box", "at": 4.6, "in": 0.5, "x": 70, "y": 528, "w": 1140, "h": 76,
+      "label": "props and context still flow down the React tree — only the node moves", "colour": "accent" }
+  ]
+}

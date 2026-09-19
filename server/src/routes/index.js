@@ -20,6 +20,8 @@ import { publicLeads, adminLeads } from "./leads.routes.js";
 import { publicBooking, adminBooking } from "./booking.routes.js";
 import { publicBootcamp, traineeAuth, meRoutes } from "./bootcamp.routes.js";
 import { adminReview } from "./reviewQueue.routes.js";
+import { accessRoutes } from "./access.routes.js";
+import { AccessCode } from "../models/AccessCode.js";
 import { dbReady } from "../config/db.js";
 
 const router = Router();
@@ -50,6 +52,7 @@ router.use("/public", publicBooking);
 router.use("/public", publicBootcamp);
 router.use("/trainee", traineeAuth);
 router.use("/me", meRoutes);
+router.use("/me", accessRoutes);
 
 router.use("/admin/settings", settingsRoutes);
 router.use("/admin/theme", themeRoutes);
@@ -116,6 +119,22 @@ router.use("/admin/faqs", crudRouter({ Model: Faq, resource: "faqs" }));
 router.use(
   "/admin/technologies",
   crudRouter({ Model: Technology, resource: "technologies", filterable: ["group"] })
+);
+
+router.use(
+  "/admin/access-codes",
+  crudRouter({
+    Model: AccessCode,
+    resource: "access-codes",
+    populate: "program",
+    sort: { createdAt: -1 },
+    filterable: ["program", "active"],
+    transform: (body, req) => ({
+      ...normalizeRefs(body, ["program"]),
+      code: String(body.code || "").trim().toUpperCase(),
+      createdBy: req.user?._id,
+    }),
+  })
 );
 
 router.use("/admin", adminReview);

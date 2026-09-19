@@ -1,0 +1,22 @@
+{
+  "title": "Tables and rows, or collections and documents",
+  "elements": [
+    { "type": "box", "at": 0.3, "in": 0.4, "x": 60, "y": 150, "w": 540, "h": 60,
+      "label": "SQL", "sub": "a fixed schema, enforced by the database", "colour": "blue" },
+    { "type": "box", "at": 0.5, "in": 0.4, "x": 60, "y": 226, "w": 540, "h": 250, "label": "", "colour": "blue" },
+    { "type": "box", "at": 0.9, "in": 0.35, "x": 90, "y": 252, "w": 480, "h": 56, "label": "places   id | title | address", "colour": "muted" },
+    { "type": "box", "at": 1.2, "in": 0.35, "x": 90, "y": 320, "w": 480, "h": 56, "label": "users    id | name | email", "colour": "muted" },
+    { "type": "box", "at": 1.5, "in": 0.35, "x": 90, "y": 388, "w": 480, "h": 62, "label": "a JOIN stitches them together", "colour": "accent" },
+
+    { "type": "box", "at": 2.2, "in": 0.4, "x": 680, "y": 150, "w": 540, "h": 60,
+      "label": "NoSQL — MongoDB", "sub": "the shape lives in your code", "colour": "green" },
+    { "type": "box", "at": 2.3, "in": 0.4, "x": 680, "y": 226, "w": 540, "h": 250, "label": "", "colour": "green" },
+    { "type": "box", "at": 2.7, "in": 0.35, "x": 710, "y": 252, "w": 480, "h": 56, "label": "places   one collection", "colour": "muted" },
+    { "type": "box", "at": 3.0, "in": 0.35, "x": 710, "y": 320, "w": 480, "h": 56, "label": "{ _id, title, address, creator }", "colour": "muted" },
+    { "type": "box", "at": 3.3, "in": 0.35, "x": 710, "y": 388, "w": 480, "h": 62, "label": "documents, shaped like JS objects", "colour": "accent" },
+
+    { "type": "caption", "at": 4.0, "text": "no schema in the database means no schema — unless something in your code supplies one" },
+    { "type": "box", "at": 4.2, "in": 0.5, "x": 60, "y": 512, "w": 1160, "h": 96,
+      "label": "that something is Mongoose", "sub": "the flexibility is real; so is the mess when nothing enforces a shape", "colour": "purple" }
+  ]
+}
